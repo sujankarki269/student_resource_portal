@@ -1,0 +1,13 @@
+<div class="sidebar">
+    <h5>Subjects</h5>
+    <ul class="list-group">
+        <li class="list-group-item {% if not selected %}active{% endif %}">
+            <a href="?{% if query %}q={{ query }}&{% endif %}" class="text-decoration-none">All</a>
+        </li>
+        {% for subject in subjects %}
+        <li class="list-group-item {% if selected == subject.id|stringformat:'s' %}active{% endif %}">
+            <a href="?subject={{ subject.id }}{% if query %}&q={{ query }}{% endif %}" class="text-decoration-none">{{ subject.name }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>

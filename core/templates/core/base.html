@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Student Resource Portal{% endblock %}</title>
+    
+    <!-- SEO meta -->
+    <meta name="description" content="Student Resource Portal - Notes, Assignments, Programs, Tutorials">
+    <meta name="keywords" content="study, notes, assignments, programs, tutorials">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+     <link rel="stylesheet" href="https://blog-static.cnblogs.com/files/miluluyo/siyuan.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Prism for syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet" />
+    <!-- Custom CSS -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'core/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/dark-mode.css' %}" id="dark-mode-stylesheet">
+</head>
+<body class="{% if request.COOKIES.darkMode == 'true' %}dark-mode{% endif %}">
+    <div class="cursor"></div>
+    {% include 'core/includes/navbar.html' %}
+
+    <main class="container my-4">
+        {% if active_announcements %}
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+            <strong>Announcements:</strong>
+            <ul class="mb-0">
+                {% for a in active_announcements %}
+                <li><strong>{{ a.title }}</strong>: {{ a.content|truncatechars:100 }}</li>
+                {% endfor %}
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    {% include 'core/includes/footer.html' %}
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Prism JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <!-- Custom JS -->
+    <script src="{% static 'core/js/main.js' %}"></script>
+    <script src="{% static 'core/js/search.js' %}"></script>
+
+    <!-- PDF Preview Modal (available on all pages) -->
+<div class="modal fade" id="pdfModal" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content rounded-4 shadow-lg">
+            <div class="modal-header bg-gradient text-black">
+                <h5 class="modal-title">PDF Preview</h5>
+                <button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <iframe id="pdfIframe" style="width:100%; height:80vh;" frameborder="0"></iframe>
+                <p class="mt-3">If the PDF does not display, <a id="pdfFallbackLink" href="" target="_blank">click here to open it</a>.</p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- jQuery (required for fish.js) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Fish animation container - full width -->
+<div id="jsi-flying-fish-container" style="position: fixed; bottom: 0; left: 0; width: 100%; height: 150px; z-index: 1; pointer-events: none; background: linear-gradient(to top, rgba(0,0,0,0.1), transparent);"></div>
+<script src="{% static 'core/js/fish.js' %}"></script>
+
+<!-- 看板娘 - 猫 -->
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script>
+<script>
+    L2Dwidget.init({
+        "model": {
+            jsonPath: "https://unpkg.com/live2d-widget-model-hijiki/assets/hijiki.model.json",
+            "scale": 1
+        },
+        "display": {
+            "position": "left",
+            "width": 100,
+            "height": 200,
+            "hOffset": 70,
+            "vOffset": 0
+        },
+        "mobile": {
+            "show": true,
+            "scale": 0.5
+        },
+        "react": {
+            "opacityDefault": 0.7,
+            "opacityOnHover": 0.2
+        }
+    });
+    window.onload = function(){
+        $("#live2dcanvas").attr("style","position: fixed; opacity: 0.7; left: 70px; bottom: 0px; z-index: 1; pointer-events: none;")
+    }
+</script>
+
+<!-- 点击冒点 -->
+<canvas width="1777" height="841" style="position: fixed; left: 0px; top: 0px; z-index: 2147483647; pointer-events: none;"></canvas>
+<script src="https://blog-static.cnblogs.com/files/elkyo/mouse-click.js"></script>
+
+<!-- Mobile responsive style (from original) -->
+<style>
+@media only screen and (max-width: 767px){
+    #sidebar_search_box input[type=text]{width:calc(100% - 24px)}
+}
+</style>
+</body>
+</html>

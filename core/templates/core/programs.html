@@ -1,0 +1,72 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Programs{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h2>💻 Programs</h2>
+        <form method="get" class="row g-2 mb-4">
+            <div class="col-auto">
+                <input type="text" name="q" class="form-control" placeholder="Search programs..." value="{{ query|default:'' }}">
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary">Filter</button>
+            </div>
+        </form>
+        <div class="row g-4">
+            {% for program in programs %}
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ program.title }}</h5>
+                        <p class="card-text">{{ program.description|truncatechars:100 }}</p>
+                        <p><small>Language: {{ program.language }} | Downloads: {{ program.downloads }}</small></p>
+                        <pre><code class="language-{{ program.language }}">{{ program.code_snippet|truncatechars:200 }}</code></pre>
+                        {% if program.file %}
+                        <a href="{% url 'download' 'program' program.id %}" class="btn btn-sm btn-success" onclick="showDownloadToast('Downloading {{ program.title }}')">Download</a>
+                        {% endif %}
+                        <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#codeModal{{ program.id }}">View Full Code</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal for full code -->
+            <div class="modal fade" id="codeModal{{ program.id }}" tabindex="-1">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">{{ program.title }} - Full Code</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <pre><code class="language-{{ program.language }}">{{ program.code_snippet }}</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p>No programs found.</p>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if programs.has_other_pages %}
+        <nav class="mt-4">
+            <ul class="pagination">
+                {% if programs.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page={{ programs.previous_page_number }}{% if query %}&q={{ query }}{% endif %}">Previous</a></li>
+                {% endif %}
+                {% for num in programs.paginator.page_range %}
+                <li class="page-item {% if programs.number == num %}active{% endif %}"><a class="page-link" href="?page={{ num }}{% if query %}&q={{ query }}{% endif %}">{{ num }}</a></li>
+                {% endfor %}
+                {% if programs.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ programs.next_page_number }}{% if query %}&q={{ query }}{% endif %}">Next</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

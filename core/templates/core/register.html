@@ -1,0 +1,80 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-5 col-md-7">
+        <div class="card shadow-lg border-0 rounded-4">
+            <div class="card-body p-4">
+
+                <div class="text-center mb-4">
+                    <h3 class="fw-bold">Create Account 🎓</h3>
+                    <p class="text-muted">Join the Student Resource Portal</p>
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    <!-- Username -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Username</label>
+                        <input type="text" name="username" class="form-control form-control-m"
+                               placeholder="Choose a username" required>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Email</label>
+                        <input type="email" name="email" class="form-control form-control-m"
+                               placeholder="Enter your email" required>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Password</label>
+                        <input type="password" name="password1" class="form-control form-control-m"
+                               placeholder="Create a password" required>
+                    </div>
+
+                    <!-- Confirm Password -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Confirm Password</label>
+                        <input type="password" name="password2" class="form-control form-control-m"
+                               placeholder="Confirm your password" required>
+                    </div>
+
+                    <!-- Error messages -->
+                    {% if form.errors %}
+                    <div class="alert alert-danger">
+                        Please correct the errors below.
+                    </div>
+                    {% endif %}
+
+                    <!-- Register Button -->
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-success btn-m">
+                            <i class="bi bi-person-plus"></i> Register
+                        </button>
+                    </div>
+
+                    <!-- Login link -->
+                    <div class="text-center mt-3">
+                        <small class="text-muted">
+                            Already have an account?
+                            <a href="{% url 'login' %}" class="text-decoration-none">Login</a>
+                        </small>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>
+{% endblock %}

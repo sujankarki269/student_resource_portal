@@ -1,0 +1,59 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Notes{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-3">
+        {% include 'core/includes/sidebar.html' with subjects=subjects selected=selected_subject %}
+    </div>
+    <div class="col-md-9">
+        <h2>📝 Notes</h2>
+        <form method="get" class="row g-2 mb-4">
+            <div class="col-auto">
+                <input type="text" name="q" class="form-control" placeholder="Search notes..." value="{{ query|default:'' }}">
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary">Filter</button>
+            </div>
+        </form>
+        <div class="row g-4">
+            {% for note in notes %}
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ note.title }}</h5>
+                        <p class="card-text">{{ note.description|truncatechars:50 }}....</p>
+                        <p><small>Uploaded: {{ note.upload_date|date:"M d, Y" }} | Downloads: {{ note.downloads }}</small></p>
+                        <a href="{% url 'download' 'note' note.id %}" class="btn btn-sm btn-success" onclick="showDownloadToast('Downloading {{ note.title }}')">Download</a>
+                        {% if note.file.url|slice:'-4:' == '.pdf' %}
+                        <a href="{{ note.file.url }}" class="btn btn-sm btn-info">Preview</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p>No notes found.</p>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if notes.has_other_pages %}
+        <nav class="mt-4">
+            <ul class="pagination">
+                {% if notes.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page={{ notes.previous_page_number }}{% if query %}&q={{ query }}{% endif %}{% if selected_subject %}&subject={{ selected_subject }}{% endif %}">Previous</a></li>
+                {% endif %}
+                {% for num in notes.paginator.page_range %}
+                <li class="page-item {% if notes.number == num %}active{% endif %}"><a class="page-link" href="?page={{ num }}{% if query %}&q={{ query }}{% endif %}{% if selected_subject %}&subject={{ selected_subject }}{% endif %}">{{ num }}</a></li>
+                {% endfor %}
+                {% if notes.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ notes.next_page_number }}{% if query %}&q={{ query }}{% endif %}{% if selected_subject %}&subject={{ selected_subject }}{% endif %}">Next</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

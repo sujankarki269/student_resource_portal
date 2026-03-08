@@ -1,0 +1,59 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Assignments{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-3">
+        {% include 'core/includes/sidebar.html' with subjects=subjects selected=selected_subject %}
+    </div>
+    <div class="col-md-9">
+        <h2>📋 Assignments</h2>
+        <form method="get" class="row g-2 mb-4">
+            <div class="col-auto">
+                <input type="text" name="q" class="form-control" placeholder="Search assignments..." value="{{ query|default:'' }}">
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary">Filter</button>
+            </div>
+        </form>
+        <div class="row g-4">
+            {% for assignment in assignments %}
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ assignment.title }}</h5>
+                        <p class="card-text">{{ assignment.description|truncatechars:50 }}</p>
+                        <p><small>Due: {{ assignment.due_date }} | Status: {{ assignment.get_status_display }}</small></p>
+                        <p><small>Downloads: {{ assignment.downloads }}</small></p>
+                        {% if assignment.file %}
+                        <a href="{% url 'download' 'assignment' assignment.id %}" class="btn btn-sm btn-success" onclick="showDownloadToast('Downloading {{ assignment.title }}')">Download</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p>No assignments found.</p>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if assignments.has_other_pages %}
+        <nav class="mt-4">
+            <ul class="pagination">
+                {% if assignments.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page={{ assignments.previous_page_number }}{% if query %}&q={{ query }}{% endif %}{% if selected_subject %}&subject={{ selected_subject }}{% endif %}">Previous</a></li>
+                {% endif %}
+                {% for num in assignments.paginator.page_range %}
+                <li class="page-item {% if assignments.number == num %}active{% endif %}"><a class="page-link" href="?page={{ num }}{% if query %}&q={{ query }}{% endif %}{% if selected_subject %}&subject={{ selected_subject }}{% endif %}">{{ num }}</a></li>
+                {% endfor %}
+                {% if assignments.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ assignments.next_page_number }}{% if query %}&q={{ query }}{% endif %}{% if selected_subject %}&subject={{ selected_subject }}{% endif %}">Next</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
