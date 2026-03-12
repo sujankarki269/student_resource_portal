@@ -1,15 +1,11 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import login, authenticate, logout
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q, Count
 from .models import Note, Assignment, Program, Tutorial, Subject, Tag, Announcement, Category
-from .forms import UserRegisterForm  # we'll create a simple form
 from django.http import FileResponse
-from django.shortcuts import get_object_or_404
 import os
-
 
 @login_required
 def home(request):
@@ -81,8 +77,8 @@ def programs_list(request):
 
 @login_required
 def tutorials_list(request):
-    categories = Category.objects.all()  # Get all categories from DB
-    selected_category = request.GET.get('category')  # This will be an ID
+    categories = Category.objects.all()
+    selected_category = request.GET.get('category')
     query = request.GET.get('q')
     tutorials = Tutorial.objects.all().order_by('-upload_date')
     if selected_category:
@@ -100,45 +96,6 @@ def tutorials_list(request):
     }
     return render(request, 'core/tutorials.html', context)
 
-# @login_required
-# # Download view to increment counter
-# def download_file(request, model, pk):
-#     model_map = {'note': Note, 'assignment': Assignment, 'program': Program, 'tutorial': Tutorial}
-#     obj = get_object_or_404(model_map[model], pk=pk)
-#     obj.downloads += 1
-#     obj.save()
-#     return redirect(obj.file.url)
-
-# Authentication
-def register(request):
-    if request.method == 'POST':
-        form = UserRegisterForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('home')
-    else:
-        form = UserRegisterForm()
-    return render(request, 'core/register.html', {'form': form})
-
-def login_view(request):
-    if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
-            if user:
-                login(request, user)
-                return redirect('home')
-    else:
-        form = AuthenticationForm()
-    return render(request, 'core/login.html', {'form': form})
-
-def logout_view(request):
-    logout(request)
-    return redirect('home')
-
 @login_required
 def profile(request):
     return render(request, 'core/profile.html')
@@ -152,10 +109,8 @@ def download_file(request, model, pk):
         'tutorial': Tutorial
     }
     obj = get_object_or_404(model_map[model], pk=pk)
-    # Increment download count
     obj.downloads += 1
     obj.save()
-    # Serve the file as an attachment (forces download)
-    file_path = obj.file.path  # full filesystem path
+    file_path = obj.file.path
     response = FileResponse(open(file_path, 'rb'), as_attachment=True, filename=os.path.basename(file_path))
     return response

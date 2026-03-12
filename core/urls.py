@@ -8,8 +8,5 @@ urlpatterns = [
     path('programs/', views.programs_list, name='programs'),
     path('tutorials/', views.tutorials_list, name='tutorials'),
     path('download/<str:model>/<int:pk>/', views.download_file, name='download'),
-    path('register/', views.register, name='register'),
-    path('login/', views.login_view, name='login'),
-    path('logout/', views.logout_view, name='logout'),
     path('profile/', views.profile, name='profile'),
 ]
