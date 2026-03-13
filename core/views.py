@@ -3,9 +3,12 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q, Count
-from .models import Note, Assignment, Program, Tutorial, Subject, Tag, Announcement, Category
+from .models import Note, Assignment, Program, Tutorial, Subject, Tag, Announcement, Category, Profile
 from django.http import FileResponse
 import os
+from django.contrib import messages
+from .forms import UserUpdateForm, ProfileUpdateForm
+
 
 @login_required
 def home(request):
@@ -114,3 +117,26 @@ def download_file(request, model, pk):
     file_path = obj.file.path
     response = FileResponse(open(file_path, 'rb'), as_attachment=True, filename=os.path.basename(file_path))
     return response
+
+@login_required
+def profile(request):
+    # Ensure profile exists (should be created by signal, but just in case)
+    profile, created = Profile.objects.get_or_create(user=request.user)
+    
+    if request.method == 'POST':
+        u_form = UserUpdateForm(request.POST, instance=request.user)
+        p_form = ProfileUpdateForm(request.POST, instance=profile)
+        if u_form.is_valid() and p_form.is_valid():
+            u_form.save()
+            p_form.save()
+            messages.success(request, 'Your profile has been updated!')
+            return redirect('profile')
+    else:
+        u_form = UserUpdateForm(instance=request.user)
+        p_form = ProfileUpdateForm(instance=profile)
+
+    context = {
+        'u_form': u_form,
+        'p_form': p_form
+    }
+    return render(request, 'core/profile.html', context)
