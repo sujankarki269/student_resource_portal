@@ -3,7 +3,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q, Count, Prefetch
-from .models import Note, Assignment, Program, Tutorial, Subject, Tag, Announcement, Category, Profile
+from .models import Note, Assignment, Program, Tutorial, Subject, Tag, Announcement, Category, Profile, PortfolioProfile 
 from django.http import FileResponse
 import os
 from django.contrib import messages
@@ -155,3 +155,17 @@ def profile(request):
         'p_form': p_form
     }
     return render(request, 'core/profile.html', context)
+
+@login_required
+def portfolio(request):
+    # Get the first (and only) profile; create one if none exists
+    profile = PortfolioProfile.objects.first()
+    if not profile:
+        # Create a placeholder profile (optional)
+        profile = PortfolioProfile.objects.create(
+            first_name='Er. Sujan',
+            surname='Karki',
+            email='sujan@ioepc.edu.np'
+        )
+    print("Profile found:", profile)
+    return render(request, 'core/portfolio.html', {'profile': profile})

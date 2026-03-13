@@ -9,4 +9,5 @@ urlpatterns = [
     path('tutorials/', views.tutorials_list, name='tutorials'),
     path('download/<str:model>/<int:pk>/', views.download_file, name='download'),
     path('profile/', views.profile, name='profile'),
+    path('portfolio/', views.portfolio, name='portfolio'),
 ]

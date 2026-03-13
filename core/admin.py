@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
-from .models import Subject, Note, Assignment, Program, Category, Tutorial, Tag, Announcement, Profile
+from .models import Subject, Note, Assignment, Program, Category, Tutorial, Tag, Announcement, Profile, WorkExperience, Education, Publication, HonorAward, SubjectTaught, Skill, PortfolioProfile
 
 class ProfileInline(admin.StackedInline):
     model = Profile
@@ -10,6 +10,45 @@ class ProfileInline(admin.StackedInline):
 
 class CustomUserAdmin(UserAdmin):
     inlines = (ProfileInline,)
+
+class WorkExperienceInline(admin.TabularInline):
+    model = WorkExperience
+    extra = 1
+
+class EducationInline(admin.TabularInline):
+    model = Education
+    extra = 1
+
+class PublicationInline(admin.TabularInline):
+    model = Publication
+    extra = 1
+
+class HonorAwardInline(admin.TabularInline):
+    model = HonorAward
+    extra = 1
+
+class SubjectTaughtInline(admin.TabularInline):
+    model = SubjectTaught
+    extra = 1
+
+class SkillInline(admin.TabularInline):
+    model = Skill
+    extra = 1
+
+@admin.register(PortfolioProfile)
+class PortfolioProfileAdmin(admin.ModelAdmin):
+    fieldsets = (
+        ('Personal Information', {
+            'fields': ('first_name', 'surname', 'profile_picture', 'bio',
+                       'address', 'mobile', 'email', 'nationality',
+                       'date_of_birth', 'gender')
+        }),
+        ('Social Links', {
+            'fields': ('github', 'linkedin', 'twitter')
+        }),
+    )
+    inlines = [WorkExperienceInline, EducationInline, PublicationInline,
+               HonorAwardInline, SubjectTaughtInline, SkillInline]
 
 
 admin.site.unregister(User)
