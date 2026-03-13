@@ -315,3 +315,57 @@ a:active {
     transition: opacity 0.2s ease-out; /* smooth fade */
 }
 
+/* ===== PROGRAM CARD STYLES (add below) ===== */
+.program-card {
+    height: 100%;
+}
+.program-card .card-body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+.program-code-preview {
+    max-height: 150px;
+    overflow-y: auto;
+    background-color: #f8f9fa;
+    padding: 0.5rem;
+    border-radius: 4px;
+    font-size: 0.875rem;
+}
+.program-code-preview pre {
+    margin: 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+
+/* ===== NOTES LIST CARD STYLES ===== */
+.note-list-card {
+    height: 100%;
+}
+.note-list-card .card-body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+.note-list-card .card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+.note-list-card .card-text {
+    flex-grow: 0;
+    margin-bottom: 0.5rem;
+}
+.note-list-card .small {
+    margin-bottom: 0.75rem;
+}
+.note-list-card .btn {
+    white-space: nowrap;
+}
+.note-list-card .meta-line {
+    font-size: 0.75rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.db.models import Q, Count
+from django.db.models import Q, Count, Prefetch
 from .models import Note, Assignment, Program, Tutorial, Subject, Tag, Announcement, Category, Profile
 from django.http import FileResponse
 import os
@@ -69,14 +69,29 @@ def assignments_list(request):
 
 @login_required
 def programs_list(request):
+    subjects = Subject.objects.all()  # optionally annotate with program count
+    selected_subject = request.GET.get('subject')
     query = request.GET.get('q')
     programs = Program.objects.all().order_by('-upload_date')
+    if selected_subject:
+        programs = programs.filter(subject_id=selected_subject)
     if query:
-        programs = programs.filter(Q(title__icontains=query) | Q(description__icontains=query) | Q(language__icontains=query))
+        programs = programs.filter(
+            Q(title__icontains=query) | 
+            Q(description__icontains=query) | 
+            Q(language__icontains=query)
+        )
     paginator = Paginator(programs, 9)
     page = request.GET.get('page')
     programs_page = paginator.get_page(page)
-    return render(request, 'core/programs.html', {'programs': programs_page, 'query': query})
+    context = {
+        'subjects': subjects,
+        'programs': programs_page,
+        'selected_subject': selected_subject,
+        'query': query,
+    }
+    return render(request, 'core/programs.html', context)
+
 
 @login_required
 def tutorials_list(request):

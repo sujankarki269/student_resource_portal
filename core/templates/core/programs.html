@@ -5,8 +5,14 @@
 
 {% block content %}
 <div class="row">
-    <div class="col-md-12">
-        <h2>💻 Programs</h2>
+    <!-- Sidebar with subjects -->
+    <div class="col-md-3">
+        {% include 'core/includes/sidebar.html' with subjects=subjects selected=selected_subject %}
+    </div>
+
+    <!-- Main content -->
+    <div class="col-md-9">
+        <h2 class="mb-4">💻 Programs</h2>
         <form method="get" class="row g-2 mb-4">
             <div class="col-auto">
                 <input type="text" name="q" class="form-control" placeholder="Search programs..." value="{{ query|default:'' }}">
@@ -15,39 +21,30 @@
                 <button type="submit" class="btn btn-primary">Filter</button>
             </div>
         </form>
+
+        <!-- Cards grid -->
         <div class="row g-4">
             {% for program in programs %}
-            <div class="col-md-6">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ program.title }}</h5>
-                        <p class="card-text">{{ program.description|truncatechars:100 }}</p>
-                        <p><small>Language: {{ program.language }} | Downloads: {{ program.downloads }}</small></p>
-                        <pre><code class="language-{{ program.language }}">{{ program.code_snippet|truncatechars:200 }}</code></pre>
-                        {% if program.file %}
-                        <a href="{% url 'download' 'program' program.id %}" class="btn btn-sm btn-success" onclick="showDownloadToast('Downloading {{ program.title }}')">Download</a>
-                        {% endif %}
-                        <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#codeModal{{ program.id }}">View Full Code</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Modal for full code -->
-            <div class="modal fade" id="codeModal{{ program.id }}" tabindex="-1">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">{{ program.title }} - Full Code</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                        </div>
-                        <div class="modal-body">
-                            <pre><code class="language-{{ program.language }}">{{ program.code_snippet }}</code></pre>
+                <div class="col-md-6" id="program-{{ program.id }}">
+                    <div class="card h-100 program-card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ program.title }}</h5>
+                            <p class="card-text">{{ program.description|truncatechars:100 }}</p>
+                            <p><small>Language: {{ program.language }} | Downloads: {{ program.downloads }}</small></p>
+                            <div class="program-code-preview">
+                                <pre><code class="language-{{ program.language }}">{{ program.code_snippet|truncatechars:200 }}</code></pre>
+                            </div>
+                            <div class="mt-2">
+                                {% if program.file %}
+                                <a href="{% url 'download' 'program' program.id %}" class="btn btn-sm btn-success" onclick="showDownloadToast('Downloading {{ program.title }}')">Download</a>
+                                {% endif %}
+                                <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#codeModal{{ program.id }}">View Full Code</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
             {% empty %}
-            <p>No programs found.</p>
+                <p class="text-muted">No programs found.</p>
             {% endfor %}
         </div>
 
@@ -56,17 +53,34 @@
         <nav class="mt-4">
             <ul class="pagination">
                 {% if programs.has_previous %}
-                <li class="page-item"><a class="page-link" href="?page={{ programs.previous_page_number }}{% if query %}&q={{ query }}{% endif %}">Previous</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ programs.previous_page_number }}{% if query %}&q={{ query }}{% endif %}{% if selected_subject %}&subject={{ selected_subject }}{% endif %}">Previous</a></li>
                 {% endif %}
                 {% for num in programs.paginator.page_range %}
-                <li class="page-item {% if programs.number == num %}active{% endif %}"><a class="page-link" href="?page={{ num }}{% if query %}&q={{ query }}{% endif %}">{{ num }}</a></li>
+                <li class="page-item {% if programs.number == num %}active{% endif %}"><a class="page-link" href="?page={{ num }}{% if query %}&q={{ query }}{% endif %}{% if selected_subject %}&subject={{ selected_subject }}{% endif %}">{{ num }}</a></li>
                 {% endfor %}
                 {% if programs.has_next %}
-                <li class="page-item"><a class="page-link" href="?page={{ programs.next_page_number }}{% if query %}&q={{ query }}{% endif %}">Next</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ programs.next_page_number }}{% if query %}&q={{ query }}{% endif %}{% if selected_subject %}&subject={{ selected_subject }}{% endif %}">Next</a></li>
                 {% endif %}
             </ul>
         </nav>
         {% endif %}
+
+        <!-- Code Modals (outside the grid) -->
+        {% for program in programs %}
+        <div class="modal fade" id="codeModal{{ program.id }}" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ program.title }} - Full Code</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <pre><code class="language-{{ program.language }}">{{ program.code_snippet }}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
     </div>
 </div>
 {% endblock %}

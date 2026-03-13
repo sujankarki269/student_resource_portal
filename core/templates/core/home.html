@@ -86,7 +86,7 @@
                 <p class="mb-1 text-truncate" style="max-width: 400px;">{{ item.description|truncatechars:100 }}</p>
             </div>
             <div class="text-end">
-                <small class="text-muted">{{ item.upload_date|timesince }} ago</small><br>
+                <small class="text-muted">{{item.upload_date|timesince}} ago</small><br>
                 <span class="badge bg-secondary">{% if item.note %}Note{% elif item.assignment %}Assignment{% endif %}</span>
             </div>
         </a>

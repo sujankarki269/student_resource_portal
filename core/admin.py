@@ -19,7 +19,13 @@ admin.site.register(User, CustomUserAdmin)
 admin.site.register(Subject)
 admin.site.register(Note)
 admin.site.register(Assignment)
-admin.site.register(Program)
+
+@admin.register(Program)
+class ProgramAdmin(admin.ModelAdmin):
+    list_display = ('title', 'subject', 'language', 'upload_date')
+    list_filter = ('subject', 'language')
+    search_fields = ('title', 'description')
+
 admin.site.register(Tutorial)
 admin.site.register(Tag)
 admin.site.register(Announcement)

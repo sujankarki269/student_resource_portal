@@ -56,6 +56,7 @@ class Assignment(models.Model):
 
 class Program(models.Model):
     title = models.CharField(max_length=200)
+    subject = models.ForeignKey('Subject', on_delete=models.CASCADE, related_name='programs', null=True, blank=True)
     description = models.TextField(blank=True)
     code_snippet = models.TextField(help_text="Paste code here")
     language = models.CharField(max_length=50, default='python')
