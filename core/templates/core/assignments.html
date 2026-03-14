@@ -25,7 +25,7 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ assignment.title }}</h5>
                         <p class="card-text">{{ assignment.description|truncatechars:50 }}</p>
-                        <p><small>Due: {{ assignment.due_date }} | Status: {{ assignment.get_status_display }}</small></p>
+                        <!-- <p><small>Due: {{ assignment.due_date }} | Status: {{ assignment.get_status_display }}</small></p> -->
                         <p><small>Downloads: {{ assignment.downloads }}</small></p>
                         {% if assignment.file %}
                         <a href="{% url 'download' 'assignment' assignment.id %}" class="btn btn-sm btn-success" onclick="showDownloadToast('Downloading {{ assignment.title }}')">Download</a>

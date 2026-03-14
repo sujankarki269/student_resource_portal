@@ -86,7 +86,7 @@
                 <p class="mb-1 text-truncate" style="max-width: 400px;">{{ item.description|truncatechars:100 }}</p>
             </div>
             <div class="text-end">
-                <small class="text-muted">{{item.upload_date|timesince}} ago</small><br>
+                <small class="text-muted">{{ item.upload_date|timesince }} ago</small><br>
                 <span class="badge bg-secondary">{% if item.note %}Note{% elif item.assignment %}Assignment{% endif %}</span>
             </div>
         </a>
@@ -96,16 +96,5 @@
 
 <!-- Toast container for download messages -->
 <div class="toast-container position-fixed bottom-0 end-0 p-3"></div>
-
-<!-- Hover Scale CSS -->
-<style>
-.hover-scale {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.hover-scale:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 25px rgba(0,0,0,0.15);
-}
-</style>
 
 {% endblock %}

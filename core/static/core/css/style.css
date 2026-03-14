@@ -369,3 +369,11 @@ a:active {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.hover-scale {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.hover-scale:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 25px rgba(0,0,0,0.15);
+}
