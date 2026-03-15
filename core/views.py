@@ -3,7 +3,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q, Count, Prefetch
-from .models import Note, Assignment, Program, Tutorial, Subject, Tag, Announcement, Category, Profile, PortfolioProfile 
+from .models import Note, Assignment, Program, Tutorial, Subject, Tag, Announcement, Category, Profile, PortfolioProfile, BlogPost 
 from django.http import FileResponse
 import os
 from django.contrib import messages
@@ -169,3 +169,39 @@ def portfolio(request):
         )
     print("Profile found:", profile)
     return render(request, 'core/portfolio.html', {'profile': profile})
+
+@login_required
+def tutorials_list(request):
+    categories = Category.objects.filter(parent__isnull=True).prefetch_related('children')
+    context = {
+        'categories': categories,
+        'current_category_slug': None,  # for sidebar highlighting
+    }
+    return render(request, 'core/tutorials.html', context)
+
+@login_required
+def category_detail(request, slug):
+    category = get_object_or_404(Category, slug=slug)
+    subcategories = category.children.all()
+    blog_posts = category.blog_posts.filter(is_published=True).order_by('-created_date')
+    # Top-level categories for the sidebar (full tree)
+    top_categories = Category.objects.filter(parent__isnull=True).prefetch_related('children')
+    context = {
+        'category': category,
+        'subcategories': subcategories,
+        'blog_posts': blog_posts,
+        'top_categories': top_categories,
+        'current_category_slug': category.slug,  # to highlight this category in sidebar
+    }
+    return render(request, 'core/category_detail.html', context)
+
+@login_required
+def blog_post_detail(request, slug):
+    post = get_object_or_404(BlogPost, slug=slug, is_published=True)
+    # Increment views
+    post.views += 1
+    post.save()
+    context = {
+        'post': post,
+    }
+    return render(request, 'core/blog_post_detail.html', context)

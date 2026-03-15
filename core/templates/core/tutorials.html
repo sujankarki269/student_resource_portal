@@ -1,73 +1,40 @@
 {% extends 'core/base.html' %}
-{% load static %}
+{% load static category_tags %}
 
 {% block title %}Tutorials{% endblock %}
 
 {% block content %}
 <div class="row">
+    <!-- Sidebar -->
     <div class="col-md-3">
-        <div class="sidebar">
-            <h5>Categories</h5>
-            <ul class="list-group">
-                <li class="list-group-item {% if not selected_category %}active{% endif %}">
-                    <a href="?{% if query %}q={{ query }}&{% endif %}" class="text-decoration-none">All</a>
-                </li>
-                {% for cat in categories %}
-                <li class="list-group-item {% if selected_category == cat.id %}active{% endif %}">
-                    <a href="?category={{ cat.id }}{% if query %}&q={{ query }}{% endif %}" class="text-decoration-none">{{ cat.name }}</a>
-                </li>
-                {% endfor %}
-            </ul>
+        <div class="card">
+            <div class="card-header">
+                <h5>Categories</h5>
+            </div>
+            <div class="card-body">
+                {% render_category_tree %}
+            </div>
         </div>
     </div>
+
+    <!-- Main content -->
     <div class="col-md-9">
-        <h2>📘 Tutorials</h2>
-        <form method="get" class="row g-2 mb-4">
-            <div class="col-auto">
-                <input type="text" name="q" class="form-control" placeholder="Search tutorials..." value="{{ query|default:'' }}">
-            </div>
-            <div class="col-auto">
-                <button type="submit" class="btn btn-primary">Filter</button>
-            </div>
-        </form>
-        <div class="row g-4">
-            {% for tutorial in tutorials %}
-            <div class="col-md-6">
+        <h2 class="mb-4">📚 Tutorials & Articles</h2>
+        <div class="row">
+            {% for category in categories %}
+            <div class="col-md-4 mb-4">
                 <div class="card h-100">
                     <div class="card-body">
-                        <h5 class="card-title">{{ tutorial.title }}</h5>
-                        <p class="card-text">{{ tutorial.content|truncatechars:100 }}</p>
-                        <p><small>Category: {{ tutorial.category.name|default:"Uncategorized" }} | Views: {{ tutorial.views }}</small></p>
-                        {% if tutorial.video_link %}
-                        <a href="{{ tutorial.video_link }}" target="_blank" class="btn btn-sm btn-primary">Watch Video</a>
-                        {% endif %}
-                        {% if tutorial.file %}
-                        <a href="{% url 'download' 'tutorial' tutorial.id %}" class="btn btn-sm btn-success" onclick="showDownloadToast('Downloading {{ tutorial.title }}')">Download</a>
-                        {% endif %}
+                        <h5 class="card-title">{{ category.name }}</h5>
+                        <p class="card-text">{{ category.description|truncatechars:100 }}</p>
+                        <a href="{% url 'category_detail' category.slug %}" class="btn btn-primary">View</a>
                     </div>
                 </div>
             </div>
             {% empty %}
-            <p>No tutorials found.</p>
+            <p>No categories yet.</p>
             {% endfor %}
         </div>
-
-        <!-- Pagination -->
-        {% if tutorials.has_other_pages %}
-        <nav class="mt-4">
-            <ul class="pagination">
-                {% if tutorials.has_previous %}
-                <li class="page-item"><a class="page-link" href="?page={{ tutorials.previous_page_number }}{% if query %}&q={{ query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}">Previous</a></li>
-                {% endif %}
-                {% for num in tutorials.paginator.page_range %}
-                <li class="page-item {% if tutorials.number == num %}active{% endif %}"><a class="page-link" href="?page={{ num }}{% if query %}&q={{ query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}">{{ num }}</a></li>
-                {% endfor %}
-                {% if tutorials.has_next %}
-                <li class="page-item"><a class="page-link" href="?page={{ tutorials.next_page_number }}{% if query %}&q={{ query }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}">Next</a></li>
-                {% endif %}
-            </ul>
-        </nav>
-        {% endif %}
     </div>
 </div>
 {% endblock %}

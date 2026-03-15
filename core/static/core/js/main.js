@@ -167,6 +167,13 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+    
+    document.querySelectorAll('.category-tree li > .toggle').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            this.parentElement.querySelector('ul').classList.toggle('hidden');
+        });
+    });
 
 });
 

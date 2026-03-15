@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from ckeditor_uploader.fields import RichTextUploadingField
+from django.utils.text import slugify
 
 class Tag(models.Model):
     name = models.CharField(max_length=50, unique=True)
@@ -72,13 +74,17 @@ class Program(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
-    description = models.TextField(blank=True, help_text="Optional description of the category")
+    slug = models.SlugField(unique=True, blank=True)
+    description = models.TextField(blank=True)
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
-
-    class Meta:
-        verbose_name_plural = "Categories"
 
 class Tutorial(models.Model):
     title = models.CharField(max_length=200)
@@ -236,3 +242,23 @@ class Skill(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class BlogPost(models.Model):
+    title = models.CharField(max_length=200)
+    slug = models.SlugField(unique=True, blank=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='blog_posts')
+    content = RichTextUploadingField(help_text="Write your article with images, etc.")
+    summary = models.TextField(blank=True, help_text="Short description for listings")
+    created_date = models.DateTimeField(default=timezone.now)
+    updated_date = models.DateTimeField(auto_now=True)
+    is_published = models.BooleanField(default=True)
+    views = models.IntegerField(default=0)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title

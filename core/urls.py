@@ -10,4 +10,7 @@ urlpatterns = [
     path('download/<str:model>/<int:pk>/', views.download_file, name='download'),
     path('profile/', views.profile, name='profile'),
     path('portfolio/', views.portfolio, name='portfolio'),
+    path('tutorials/', views.tutorials_list, name='tutorials'),
+    path('tutorials/category/<slug:slug>/', views.category_detail, name='category_detail'),
+    path('tutorials/post/<slug:slug>/', views.blog_post_detail, name='blog_post_detail'),
 ]

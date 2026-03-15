@@ -1,0 +1,16 @@
+{% load category_tags %}
+<ul class="category-tree">
+    {% for category in categories %}
+        <li>
+            <a href="{% url 'category_detail' category.slug %}" 
+               class="{% if category.slug == current_slug %}active{% endif %}">
+                {{ category.name }}
+            </a>
+            {% if category.children.all %}
+                {% with categories=category.children.all template_name="core/includes/category_tree.html" %}
+                    {% include template_name %}
+                {% endwith %}
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>

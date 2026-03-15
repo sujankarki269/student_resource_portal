@@ -1,7 +1,25 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
-from .models import Subject, Note, Assignment, Program, Category, Tutorial, Tag, Announcement, Profile, WorkExperience, Education, Publication, HonorAward, SubjectTaught, Skill, PortfolioProfile
+# from mptt.admin import MPTTModelAdmin 
+from .models import Subject, Note, Assignment, Program, Category, Tutorial, Tag, Announcement, Profile, WorkExperience, Education, Publication, HonorAward, SubjectTaught, Skill, PortfolioProfile, BlogPost
+
+
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('name', 'parent', 'slug')
+    prepopulated_fields = {'slug': ('name',)}
+    search_fields = ('name',)
+    list_filter = ('parent',)
+
+admin.site.register(Category, CategoryAdmin)
+
+class BlogPostAdmin(admin.ModelAdmin):
+    list_display = ('title', 'category', 'created_date', 'is_published')
+    prepopulated_fields = {'slug': ('title',)}
+    list_filter = ('category', 'is_published')
+    search_fields = ('title', 'content')
+
+admin.site.register(BlogPost, BlogPostAdmin)
 
 class ProfileInline(admin.StackedInline):
     model = Profile
@@ -68,4 +86,3 @@ class ProgramAdmin(admin.ModelAdmin):
 admin.site.register(Tutorial)
 admin.site.register(Tag)
 admin.site.register(Announcement)
-admin.site.register(Category)
