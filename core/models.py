@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from ckeditor_uploader.fields import RichTextUploadingField
+from django_ckeditor_5.fields import CKEditor5Field
 from django.utils.text import slugify
 
 class Tag(models.Model):
@@ -248,7 +248,7 @@ class BlogPost(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(unique=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='blog_posts')
-    content = RichTextUploadingField(help_text="Write your article with images, etc.")
+    content = CKEditor5Field(config_name='default', help_text="Write your article with images, etc.")
     summary = models.TextField(blank=True, help_text="Short description for listings")
     created_date = models.DateTimeField(default=timezone.now)
     updated_date = models.DateTimeField(auto_now=True)

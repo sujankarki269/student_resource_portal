@@ -43,8 +43,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',   # Google provider
-    'ckeditor',
-    'ckeditor_uploader',
+    'django_ckeditor_5'
 ]
 
 AUTHENTICATION_BACKENDS = [
@@ -165,12 +164,19 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-CKEDITOR_UPLOAD_PATH = "uploads/"
-CKEDITOR_IMAGE_BACKEND = "pillow" 
-CKEDITOR_CONFIGS = {
+# CKEditor 5 Configuration
+CKEDITOR_5_UPLOAD_PATH = "uploads/"
+CKEDITOR_5_CONFIGS = {
     'default': {
-        'toolbar': 'full',
-        'height': 300,
+        'toolbar': ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'imageUpload', 'insertTable', 'mediaEmbed', 'undo', 'redo'],
+        'image': {
+            'toolbar': ['imageTextAlternative', 'imageStyle:full', 'imageStyle:side'],
+            'styles': ['full', 'side'],
+        },
+        'table': {
+            'contentToolbar': ['tableColumn', 'tableRow', 'mergeTableCells'],
+        },
+        'height': 400,
         'width': '100%',
     },
 }
