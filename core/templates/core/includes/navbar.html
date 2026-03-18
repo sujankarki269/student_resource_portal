@@ -31,6 +31,9 @@
                 <li class="nav-item">
                     <a class="nav-link {% if '/portfolio' in request.path %}active fw-bold{% endif %}" href="{% url 'portfolio' %}">Portfolio</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if '/publications' in request.path %}active fw-bold{% endif %}" href="{% url 'publications' %}">Publications</a>
+                </li>
             </ul>
         </div>
 

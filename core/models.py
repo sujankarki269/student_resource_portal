@@ -262,3 +262,37 @@ class BlogPost(models.Model):
 
     def __str__(self):
         return self.title
+
+class PublicationCategory(models.Model):
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True, blank=True)
+    description = models.TextField(blank=True)
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ['order', 'name']
+        verbose_name_plural = "Publication categories"
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
+
+class PublicationItem(models.Model):
+    title = models.CharField(max_length=200)
+    category = models.ForeignKey(PublicationCategory, on_delete=models.CASCADE, related_name='publications')
+    authors = models.CharField(max_length=500, blank=True, help_text="List authors as they appear")
+    description = models.TextField(blank=True)
+    date = models.DateField()
+    link = models.URLField(blank=True, help_text="URL to external resource")
+    file = models.FileField(upload_to='publications/', blank=True, null=True, help_text="Upload PDF or document")
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ['order', '-date']
+
+    def __str__(self):
+        return self.title

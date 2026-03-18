@@ -9,7 +9,7 @@
         {% include 'core/includes/sidebar.html' with subjects=subjects selected=selected_subject %}
     </div>
     <div class="col-md-9">
-        <h2>📋 Assignments</h2>
+        <h2 class="mb-4">📋 Assignments</h2>
         <form method="get" class="row g-2 mb-4">
             <div class="col-auto">
                 <input type="text" name="q" class="form-control" placeholder="Search assignments..." value="{{ query|default:'' }}">

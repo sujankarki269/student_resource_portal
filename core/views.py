@@ -3,7 +3,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q, Count, Prefetch
-from .models import Note, Assignment, Program, Tutorial, Subject, Tag, Announcement, Category, Profile, PortfolioProfile, BlogPost 
+from .models import Note, Assignment, Program, Tutorial, Subject, Tag, Announcement, Category, Profile, PortfolioProfile, BlogPost, PublicationCategory, PublicationItem
 from django.http import FileResponse
 import os
 from django.contrib import messages
@@ -228,3 +228,10 @@ def blog_post_detail(request, slug):
         'post': post,
     }
     return render(request, 'core/blog_post_detail.html', context)
+
+
+@login_required
+def publications_list(request):
+    categories = PublicationCategory.objects.prefetch_related('publications').all()
+    context = {'categories': categories}
+    return render(request, 'core/publications.html', context)

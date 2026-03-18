@@ -3,7 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 # from mptt.admin import MPTTModelAdmin 
 from .models import Subject, Note, Assignment, Program, Category, Tutorial, Tag, Announcement, Profile, WorkExperience, Education, Publication, HonorAward, SubjectTaught, Skill, PortfolioProfile, BlogPost
-
+from .models import PublicationCategory, PublicationItem
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'parent', 'slug')
@@ -86,3 +86,14 @@ class ProgramAdmin(admin.ModelAdmin):
 admin.site.register(Tutorial)
 admin.site.register(Tag)
 admin.site.register(Announcement)
+
+@admin.register(PublicationCategory)
+class PublicationCategoryAdmin(admin.ModelAdmin):
+    list_display = ('name', 'order', 'description')
+    prepopulated_fields = {'slug': ('name',)}
+
+@admin.register(PublicationItem)
+class PublicationItemAdmin(admin.ModelAdmin):
+    list_display = ('title', 'category', 'date', 'order')
+    list_filter = ('category',)
+    search_fields = ('title', 'authors')

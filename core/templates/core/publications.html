@@ -1,0 +1,46 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Publications{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="mb-5 text-center">Publications & Research</h1>
+
+    {% for category in categories %}
+        <section class="mb-5">
+            <h2 class="border-bottom pb-2">{{ category.name }}</h2>
+            {% if category.description %}
+                <p class="lead">{{ category.description }}</p>
+            {% endif %}
+
+            <div class="row">
+                {% for pub in category.publications.all %}
+                <div class="col-md-6 mb-4 d-flex">
+                    <div class="card h-100 w-100 shadow-sm">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">{{ pub.title }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ pub.authors }}</h6>
+                            <p class="text-muted">{{ pub.date|date:"F Y" }}</p>
+                            <p class="card-text flex-grow-1">{{ pub.description|truncatechars:300 }}</p>
+                            <div class="mt-auto">
+                                {% if pub.link %}
+                                    <a href="{{ pub.link }}" target="_blank" class="btn btn-sm btn-outline-primary me-2">View Online</a>
+                                {% endif %}
+                                {% if pub.file %}
+                                    <a href="{{ pub.file.url }}" class="btn btn-sm btn-outline-success">Download PDF</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <p class="text-muted">No publications in this category yet.</p>
+                {% endfor %}
+            </div>
+        </section>
+    {% empty %}
+        <p class="text-center">No publication categories available.</p>
+    {% endfor %}
+</div>
+{% endblock %}
