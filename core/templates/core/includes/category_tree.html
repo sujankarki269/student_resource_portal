@@ -1,15 +1,43 @@
-{% load category_tags %}
-<ul class="category-tree">
+{% load static %}
+<ul class="category-tree list-unstyled">
     {% for category in categories %}
-        <li>
-            <a href="{% url 'category_detail' category.slug %}" 
-               class="{% if category.slug == current_slug %}active{% endif %}">
-                {{ category.name }}
-            </a>
+        <li class="mb-1">
+            <div class="d-flex align-items-center">
+                {% if category.children.all %}
+                    {% if category.slug in ancestor_slugs %}
+                        {# This category is an ancestor of current, so it should be expanded initially #}
+                        <button class="btn btn-sm btn-link p-0 me-1" type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapse-{{ category.slug }}"
+                                aria-expanded="true"
+                                aria-controls="collapse-{{ category.slug }}">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    {% else %}
+                        <button class="btn btn-sm btn-link p-0 me-1" type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapse-{{ category.slug }}"
+                                aria-expanded="false"
+                                aria-controls="collapse-{{ category.slug }}">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    {% endif %}
+                {% else %}
+                    <span class="me-1"></span>
+                {% endif %}
+                <a href="{% url 'category_detail' category.slug %}"
+                   class="{% if category.slug == current_slug %}active{% endif %}">
+                    {{ category.name }}
+                </a>
+            </div>
+
             {% if category.children.all %}
-                {% with categories=category.children.all template_name="core/includes/category_tree.html" %}
-                    {% include template_name %}
-                {% endwith %}
+                {# Add 'show' class if this category is an ancestor of current #}
+                <div class="collapse {% if category.slug in ancestor_slugs %}show{% endif %}" id="collapse-{{ category.slug }}">
+                    {% with categories=category.children.all template_name="core/includes/category_tree.html" %}
+                        {% include template_name with ancestor_slugs=ancestor_slugs current_slug=current_slug %}
+                    {% endwith %}
+                </div>
             {% endif %}
         </li>
     {% endfor %}

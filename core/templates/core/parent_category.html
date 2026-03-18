@@ -1,0 +1,42 @@
+{% extends 'core/base.html' %}
+{% load static category_tags %}
+
+{% block title %}{{ category.name }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-header"><h5>Categories</h5></div>
+            <div class="card-body">{% render_category_tree %}</div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'tutorials' %}">Tutorials</a></li>
+                <li class="breadcrumb-item active">{{ category.name }}</li>
+            </ol>
+        </nav>
+        <h2 class="mb-4">{{ category.name }}</h2>
+        {% if category.description %}<p class="lead">{{ category.description|linebreaks }}</p>{% endif %}
+
+        <h4 class="mt-5">Chapters</h4>
+        <div class="row">
+            {% for sub in subcategories %}
+            <div class="col-md-4 mb-4 d-flex">
+                <div class="card h-100 w-100">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{ sub.name }}</h5>
+                        <p class="card-text flex-grow-1">{{ sub.description|truncatechars:80|linebreaks }}</p>
+                        <a href="{% url 'category_detail' sub.slug %}" class="btn btn-sm btn-outline-primary mt-auto">Explore</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-muted">No subcategories.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

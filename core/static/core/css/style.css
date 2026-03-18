@@ -399,3 +399,103 @@ a:active {
     background-color: #007bff;
     color: white;
 }
+
+/* Force all blog images to be centered */
+.ck-content img,
+.blog-post img,
+article img {
+    display: block !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    float: none !important;
+}
+
+/* Also handle figure wrappers (CKEditor 5 default) */
+.ck-content figure,
+.blog-post figure,
+article figure {
+    text-align: center !important;
+    display: block !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    float: none !important;
+}
+
+/* If the image is inside a figure, ensure the image itself behaves */
+.ck-content figure img,
+.blog-post figure img,
+article figure img {
+    display: inline-block !important;
+    margin: 0 auto !important;
+    float: none !important;
+}
+
+
+
+
+
+
+
+
+
+/* Blog content styling */
+.blog-content img {
+    max-width: 100%;
+    height: auto;
+}
+.blog-content {
+    overflow-x: auto;
+}
+
+/* Mobile responsive adjustments (from base.html) */
+@media only screen and (max-width: 767px){
+    #sidebar_search_box input[type=text]{
+        width:calc(100% - 24px);
+    }
+}
+
+.image-align-left {
+    float: left;
+    margin: 0 1rem 1rem 0;
+}
+.image-align-center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.image-align-right {
+    float: right;
+    margin: 0 0 1rem 1rem;
+}
+
+p.has-text-align-center img {
+    display: inline-block;
+}
+
+.ck-content pre {
+    background: #f4f4f4;
+    border: 1px solid #ddd;
+    border-left: 3px solid #f36d33;
+    color: #666;
+    page-break-inside: avoid;
+    font-family: monospace;
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 1.6em;
+    max-width: 100%;
+    overflow: auto;
+    padding: 1em 1.5em;
+    display: block;
+    word-wrap: break-word;
+}
+
+.category-tree ul {
+    padding-left: 1.2rem;
+}
+.category-tree .btn-link {
+    color: inherit;
+    text-decoration: none;
+}
+.category-tree .btn-link:hover {
+    color: #0d6efd;
+}

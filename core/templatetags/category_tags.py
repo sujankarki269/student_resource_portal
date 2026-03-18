@@ -5,13 +5,13 @@ register = template.Library()
 
 @register.inclusion_tag('core/includes/category_tree.html', takes_context=True)
 def render_category_tree(context):
-    # We need the current category slug to highlight active item
     request = context['request']
     current_slug = context.get('current_category_slug')
-    # Get all top-level categories with their children pre-fetched
+    ancestor_slugs = context.get('ancestor_slugs', [])   # get from context
     categories = Category.objects.filter(parent__isnull=True).prefetch_related('children')
     return {
         'categories': categories,
         'current_slug': current_slug,
+        'ancestor_slugs': ancestor_slugs,
         'request': request,
     }

@@ -1,0 +1,40 @@
+<!-- core/templates/core/subcategory_detail.html -->
+{% extends 'core/base.html' %}
+{% load static category_tags %}
+
+{% block title %}{{ category.name }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-header"><h5>Categories</h5></div>
+            <div class="card-body">{% render_category_tree %}</div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'tutorials' %}">Tutorials</a></li>
+                <li class="breadcrumb-item active">{{ category.name }}</li>
+            </ol>
+        </nav>
+
+        <h2 class="mb-4">{{ category.name }}</h2>
+        {% if category.description %}<p class="lead">{{ category.description|linebreaksbr }}</p>{% endif %}
+
+        {% if display_post %}
+        <article class="blog-post">
+            <p class="text-muted">
+                Published {{ display_post.created_date|date:"F j, Y" }} | 
+                {{ display_post.views }} views
+            </p>
+            <div class="blog-content">{{ display_post.content|safe }}</div>
+        </article>
+        {% else %}
+        <p class="text-muted">No content yet.</p>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

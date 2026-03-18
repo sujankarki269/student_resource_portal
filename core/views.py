@@ -184,16 +184,39 @@ def category_detail(request, slug):
     category = get_object_or_404(Category, slug=slug)
     subcategories = category.children.all()
     blog_posts = category.blog_posts.filter(is_published=True).order_by('-created_date')
-    # Top-level categories for the sidebar (full tree)
-    top_categories = Category.objects.filter(parent__isnull=True).prefetch_related('children')
+
+    # Get list of ancestor slugs for the current category
+    ancestor_slugs = []
+    parent = category.parent
+    while parent:
+        ancestor_slugs.append(parent.slug)
+        parent = parent.parent
+
+    # Choose template
+    if subcategories.exists():
+        template_name = 'core/parent_category.html'
+        display_post = None
+    else:
+        template_name = 'core/subcategory_detail.html'
+        display_post = blog_posts.first() if blog_posts.exists() else None
+        if display_post:
+            display_post.views += 1
+            display_post.save()
+
+    # Get all top-level categories for sidebar (if needed)
+    top_categories = Category.objects.filter(parent__isnull=True)
+
     context = {
         'category': category,
         'subcategories': subcategories,
         'blog_posts': blog_posts,
+        'display_post': display_post,
         'top_categories': top_categories,
-        'current_category_slug': category.slug,  # to highlight this category in sidebar
+        'current_category_slug': category.slug,
+        'ancestor_slugs': ancestor_slugs,   # add this
     }
-    return render(request, 'core/category_detail.html', context)
+    return render(request, template_name, context)
+
 
 @login_required
 def blog_post_detail(request, slug):

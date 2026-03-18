@@ -168,15 +168,56 @@ SOCIALACCOUNT_PROVIDERS = {
 CKEDITOR_5_UPLOAD_PATH = "uploads/"
 CKEDITOR_5_CONFIGS = {
     'default': {
-        'toolbar': ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'imageUpload', 'insertTable', 'mediaEmbed', 'undo', 'redo'],
+        'toolbar': [
+            'heading', '|',
+            'bold', 'italic', 'underline', 'strikethrough', '|',
+            'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', '|',
+            'alignment', '|',
+            'bulletedList', 'numberedList', 'todoList', '|',
+            'outdent', 'indent', '|',
+            'link', 'blockQuote', 'code', 'codeBlock', '|',
+            'imageUpload', 'insertTable', 'mediaEmbed', 'horizontalLine', '|',
+            'removeFormat', 'undo', 'redo', '|',
+            'specialCharacters', 'superscript', 'subscript'
+        ],
         'image': {
-            'toolbar': ['imageTextAlternative', 'imageStyle:full', 'imageStyle:side'],
-            'styles': ['full', 'side'],
+            'toolbar': [
+                'imageTextAlternative', '|',
+                'imageStyle:alignLeft', 'imageStyle:alignCenter', 'imageStyle:alignRight'
+            ],
+            'styles': {
+                'alignLeft': {
+                    'name': 'Left aligned',
+                    'icon': 'left',
+                    'className': 'image-align-left'
+                },
+                'alignCenter': {
+                    'name': 'Centered',
+                    'icon': 'center',
+                    'className': 'image-align-center'
+                },
+                'alignRight': {
+                    'name': 'Right aligned',
+                    'icon': 'right',
+                    'className': 'image-align-right'
+                },
+            }
         },
         'table': {
-            'contentToolbar': ['tableColumn', 'tableRow', 'mergeTableCells'],
+            'contentToolbar': ['tableColumn', 'tableRow', 'mergeTableCells']
         },
-        'height': 400,
+        'codeBlock': {
+            'languages': [
+                {'language': 'plaintext', 'label': 'Plain text'},
+                {'language': 'python', 'label': 'Python'},
+                {'language': 'javascript', 'label': 'JavaScript'},
+                {'language': 'html', 'label': 'HTML'},
+                {'language': 'css', 'label': 'CSS'},
+                {'language': 'bash', 'label': 'Bash/Shell'},
+            ]
+        },
+        'height': 500,
         'width': '100%',
+        'removePlugins': ['Markdown'],  # if you don't want markdown support
     },
 }

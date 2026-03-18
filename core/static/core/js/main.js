@@ -175,5 +175,26 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    document.addEventListener('DOMContentLoaded', function() {
+        // Rotate caret icon on collapse events
+        const collapseButtons = document.querySelectorAll('[data-bs-toggle="collapse"]');
+        collapseButtons.forEach(button => {
+            const icon = button.querySelector('i');
+            if (!icon) return;
+            const targetId = button.getAttribute('data-bs-target');
+            const target = document.querySelector(targetId);
+            if (target) {
+                target.addEventListener('show.bs.collapse', function () {
+                    icon.classList.remove('fa-chevron-right');
+                    icon.classList.add('fa-chevron-down');
+                });
+                target.addEventListener('hide.bs.collapse', function () {
+                    icon.classList.remove('fa-chevron-down');
+                    icon.classList.add('fa-chevron-right');
+                });
+            }
+        });
+    });
+
 });
 
