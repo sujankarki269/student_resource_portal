@@ -1,0 +1,11 @@
+{% load category_tags %}
+<div class="sidebar-sticky">
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+        <div class="card-header border-0 py-3 px-4" style="background:linear-gradient(135deg,#667eea,#764ba2);">
+            <h6 class="mb-0 text-white fw-semibold"><i class="fas fa-sitemap me-2"></i>Categories</h6>
+        </div>
+        <div class="px-3 py-3">
+            {% render_category_tree %}
+        </div>
+    </div>
+</div>

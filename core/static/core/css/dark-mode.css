@@ -467,7 +467,23 @@ body.dark-mode,
     border-color: rgba(255,255,255,0.08);
 }
 
-/* ===== Sidebar ===== */
+/* ===== Gradient sidebar (subjects) — keep gradient in dark mode ===== */
+.dark-mode .sidebar-sticky .card[style*="linear-gradient"] {
+    background: linear-gradient(135deg, #4a5bc4, #5a3580) !important;
+}
+.dark-mode .sidebar-item-grad {
+    color: rgba(255,255,255,0.8) !important;
+}
+.dark-mode .sidebar-item-grad:hover:not(.active) {
+    background: rgba(255,255,255,0.12) !important;
+    color: #fff !important;
+}
+.dark-mode .sidebar-item-grad.active {
+    background: rgba(255,255,255,0.18) !important;
+    color: #fff !important;
+}
+
+/* ===== Sticky sidebar (tutorial categories) ===== */
 .dark-mode .sidebar-sticky .card {
     background: #2c2f36;
     border-color: #3a3f4a;

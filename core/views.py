@@ -32,19 +32,33 @@ def home(request):
     }
     return render(request, 'core/home.html', context)
 
+def _word_search(queryset, query, fields):
+    """Return queryset filtered by every word in query across the given fields."""
+    words = [w for w in query.strip().split() if w]
+    if not words:
+        return queryset
+    combined = Q()
+    for word in words:
+        word_q = Q()
+        for field in fields:
+            word_q |= Q(**{f'{field}__icontains': word})
+        combined |= word_q
+    return queryset.filter(combined).distinct()
+
 @login_required
 def notes_list(request):
     subjects = Subject.objects.annotate(num_notes=Count('note'))
     selected_subject = request.GET.get('subject')
-    query = request.GET.get('q')
-    notes = Note.objects.all().order_by('-upload_date')
+    query = request.GET.get('q', '').strip()
+    notes = Note.objects.select_related('subject').prefetch_related('tags').order_by('-upload_date')
     if selected_subject:
         notes = notes.filter(subject_id=selected_subject)
     if query:
-        notes = notes.filter(Q(title__icontains=query) | Q(description__icontains=query))
+        notes = _word_search(notes, query, [
+            'title', 'description', 'subject__name', 'tags__name',
+        ])
     paginator = Paginator(notes, 9)
-    page = request.GET.get('page')
-    notes_page = paginator.get_page(page)
+    notes_page = paginator.get_page(request.GET.get('page'))
     context = {
         'subjects': subjects,
         'notes': notes_page,
@@ -57,15 +71,16 @@ def notes_list(request):
 def assignments_list(request):
     subjects = Subject.objects.annotate(num_notes=Count('assignment'))
     selected_subject = request.GET.get('subject')
-    query = request.GET.get('q')
-    assignments = Assignment.objects.all().order_by('-upload_date')
+    query = request.GET.get('q', '').strip()
+    assignments = Assignment.objects.select_related('subject').prefetch_related('tags').order_by('-upload_date')
     if selected_subject:
         assignments = assignments.filter(subject_id=selected_subject)
     if query:
-        assignments = assignments.filter(Q(title__icontains=query) | Q(description__icontains=query))
+        assignments = _word_search(assignments, query, [
+            'title', 'description', 'subject__name', 'tags__name',
+        ])
     paginator = Paginator(assignments, 9)
-    page = request.GET.get('page')
-    assignments_page = paginator.get_page(page)
+    assignments_page = paginator.get_page(request.GET.get('page'))
     context = {
         'subjects': subjects,
         'assignments': assignments_page,
@@ -78,19 +93,16 @@ def assignments_list(request):
 def programs_list(request):
     subjects = Subject.objects.annotate(num_notes=Count('programs'))
     selected_subject = request.GET.get('subject')
-    query = request.GET.get('q')
-    programs = Program.objects.all().order_by('-upload_date')
+    query = request.GET.get('q', '').strip()
+    programs = Program.objects.select_related('subject').prefetch_related('tags').order_by('-upload_date')
     if selected_subject:
         programs = programs.filter(subject_id=selected_subject)
     if query:
-        programs = programs.filter(
-            Q(title__icontains=query) | 
-            Q(description__icontains=query) | 
-            Q(language__icontains=query)
-        )
+        programs = _word_search(programs, query, [
+            'title', 'description', 'language', 'subject__name', 'tags__name',
+        ])
     paginator = Paginator(programs, 9)
-    page = request.GET.get('page')
-    programs_page = paginator.get_page(page)
+    programs_page = paginator.get_page(request.GET.get('page'))
     context = {
         'subjects': subjects,
         'programs': programs_page,

@@ -1,24 +1,25 @@
 <div class="sidebar-sticky">
     <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
         <div class="card-header border-0 py-3 px-4" style="background:linear-gradient(135deg,#667eea,#764ba2);">
-            <h6 class="mb-0 text-white fw-semibold"><i class="fas fa-filter me-2"></i>Filter by Subject</h6>
+            <h6 class="mb-0 text-white fw-semibold"><i class="fas fa-book me-2"></i>Subjects</h6>
         </div>
-        <div class="list-group list-group-flush">
-            <a href="?{% if query %}q={{ query }}{% endif %}"
-               class="list-group-item list-group-item-action d-flex justify-content-between align-items-center px-4 py-2 sidebar-item {% if not selected %}active{% endif %}">
-                <span><i class="fas fa-th-list me-2 opacity-50"></i>All Subjects</span>
-            </a>
-            {% for subject in subjects %}
-            <a href="?subject={{ subject.id }}{% if query %}&q={{ query }}{% endif %}"
-               class="list-group-item list-group-item-action d-flex justify-content-between align-items-center px-4 py-2 sidebar-item {% if selected == subject.id|stringformat:'s' %}active{% endif %}">
-                <span class="text-truncate me-2">{{ subject.name }}</span>
-                {% if subject.num_notes is not None %}
-                <span class="badge rounded-pill {% if selected == subject.id|stringformat:'s' %}bg-white text-primary{% else %}bg-primary-subtle text-primary{% endif %} flex-shrink-0">
-                    {{ subject.num_notes }}
-                </span>
-                {% endif %}
-            </a>
-            {% endfor %}
+        <div class="px-3 py-3">
+            <ul class="category-tree list-unstyled">
+                {% for subject in subjects %}
+                <li>
+                    <a href="?subject={{ subject.id }}{% if query %}&q={{ query }}{% endif %}"
+                       class="d-flex justify-content-between align-items-center {% if selected == subject.id|stringformat:'s' %}active{% endif %}">
+                        <span class="text-truncate">{{ subject.name }}</span>
+                        {% if subject.num_notes is not None %}
+                        <span class="badge rounded-pill ms-2 flex-shrink-0
+                            {% if selected == subject.id|stringformat:'s' %}bg-primary text-white{% else %}bg-primary-subtle text-primary{% endif %}">
+                            {{ subject.num_notes }}
+                        </span>
+                        {% endif %}
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
 </div>
