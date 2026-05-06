@@ -73,11 +73,13 @@
             {% endfor %}
         </div>
         {% if announcements|length > 1 %}
-        <button class="carousel-control-prev" type="button" data-bs-target="#announcementCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" style="filter: invert(1);"></span>
+        <button class="carousel-control-prev" type="button" data-bs-target="#announcementCarousel" data-bs-slide="prev"
+                style="width:2rem;">
+            <i class="fas fa-chevron-left text-secondary"></i>
         </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#announcementCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" style="filter: invert(1);"></span>
+        <button class="carousel-control-next" type="button" data-bs-target="#announcementCarousel" data-bs-slide="next"
+                style="width:2rem;">
+            <i class="fas fa-chevron-right text-secondary"></i>
         </button>
         {% endif %}
     </div>
@@ -149,7 +151,7 @@
     <div class="row g-4">
         {% for note in latest_notes %}
         <div class="col-md-4 col-sm-6">
-            <div class="card h-100 shadow-sm border-0 hover-scale note-card">
+            <div class="card h-100 border-0 note-card hover-scale">
                 <div class="card-body d-flex flex-column">
                     <div class="d-flex justify-content-between align-items-start mb-2">
                         <span class="badge bg-primary-subtle text-primary rounded-pill">{{ note.subject.name }}</span>
@@ -194,7 +196,7 @@
                 {% if update.type == 'Note' %}
                 <span class="badge bg-primary rounded-pill">Note</span>
                 {% else %}
-                <span class="badge bg-warning text-dark rounded-pill">Assignment</span>
+                <span class="badge bg-warning rounded-pill">Assignment</span>
                 {% endif %}
             </div>
         </div>

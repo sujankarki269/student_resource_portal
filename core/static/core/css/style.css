@@ -231,6 +231,17 @@ a:active {
     }
 }
 
+/* ===== GLOBAL CARD BORDER + HOVER (matches Google button style) ===== */
+.card {
+    border: 1.5px solid #d1d5db !important;
+    transition: border-color .2s, box-shadow .2s, transform .15s;
+}
+.card:hover {
+    border-color: #667eea !important;
+    box-shadow: 0 6px 20px rgba(102,126,234,0.15) !important;
+    transform: translateY(-2px);
+}
+
 /* ===== HOME PAGE CARDS ===== */
 .card.subject-card {
     border: none;
@@ -312,18 +323,19 @@ a:active {
 
 /* ===== RECENT UPDATES LIST ===== */
 .list-group.recent-list .list-group-item {
-    border: none;
+    border: 1.5px solid #d1d5db !important;
     border-radius: 15px !important;
     margin-bottom: 10px;
     background: white;
     box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-    transition: all 0.3s;
+    transition: border-color .2s, box-shadow .2s, transform .15s;
     padding: 1.2rem;
 }
 .list-group.recent-list .list-group-item:hover {
-    background: linear-gradient(135deg, #f9f9ff, #ffffff);
-    box-shadow: 0 10px 20px rgba(102,126,234,0.15);
-    transform: translateX(5px);
+    border-color: #667eea !important;
+    box-shadow: 0 6px 20px rgba(102,126,234,0.18) !important;
+    transform: translateY(-2px);
+    background: white;
 }
 
 /* ===== SECTION TITLES ===== */
@@ -375,12 +387,15 @@ a:active {
 
 /* ===== PROGRAM CARDS ===== */
 .program-card-new {
-    border-top: 3px solid #28a745 !important;
-    transition: var(--transition);
+    background: #fff;
+    border: 1.5px solid #d1d5db !important;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.06), inset 0 3px 0 #28a745 !important;
+    transition: border-color .2s, box-shadow .2s, transform .15s;
 }
 .program-card-new:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 14px 30px rgba(40,167,69,0.15) !important;
+    border-color: #667eea !important;
+    box-shadow: 0 6px 20px rgba(102,126,234,0.18), inset 0 3px 0 #28a745 !important;
+    transform: translateY(-2px);
 }
 
 /* Language badges */
@@ -451,6 +466,15 @@ a:active {
 /* ===== NOTES LIST CARD STYLES ===== */
 .note-list-card {
     height: 100%;
+    background: #fff;
+    border: 1.5px solid #d1d5db !important;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.06), inset 0 3px 0 #667eea !important;
+    transition: border-color .2s, box-shadow .2s, transform .15s;
+}
+.note-list-card:hover {
+    border-color: #667eea !important;
+    box-shadow: 0 6px 20px rgba(102,126,234,0.18), inset 0 3px 0 #667eea !important;
+    transform: translateY(-2px);
 }
 .note-list-card .card-body {
     display: flex;
@@ -480,11 +504,7 @@ a:active {
 }
 
 .hover-scale {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.hover-scale:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 25px rgba(0,0,0,0.15);
+    transition: border-color .2s, box-shadow .2s, transform .15s;
 }
 
 .category-tree, .category-tree ul {
@@ -694,20 +714,29 @@ p.has-text-align-center img {
 
 /* ===== ASSIGNMENT CARD ===== */
 .assignment-card {
-    border-top: 3px solid #ffc107 !important;
+    background: #fff;
+    border: 1.5px solid #d1d5db !important;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.06), inset 0 3px 0 #ffc107 !important;
+    transition: border-color .2s, box-shadow .2s, transform .15s;
 }
 .assignment-card:hover {
-    box-shadow: 0 12px 25px rgba(255,193,7,0.2) !important;
-    transform: translateY(-4px);
+    border-color: #667eea !important;
+    box-shadow: 0 6px 20px rgba(102,126,234,0.18), inset 0 3px 0 #ffc107 !important;
+    transform: translateY(-2px);
 }
 
 /* ===== TUTORIAL CATEGORY CARD ===== */
 .tutorial-category-card {
-    border-top: 3px solid #0dcaf0 !important;
+    background: #fff;
+    border: 1.5px solid #d1d5db !important;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.06), inset 0 3px 0 #0dcaf0 !important;
     cursor: pointer;
+    transition: border-color .2s, box-shadow .2s, transform .15s;
 }
 .tutorial-category-card:hover {
-    box-shadow: 0 12px 25px rgba(13,202,240,0.2) !important;
+    border-color: #667eea !important;
+    box-shadow: 0 6px 20px rgba(102,126,234,0.18), inset 0 3px 0 #0dcaf0 !important;
+    transform: translateY(-2px);
 }
 .tutorial-icon {
     width: 48px;
@@ -858,6 +887,17 @@ footer .text-dark {
 .btn-bookmark:hover { color: #667eea; transform: scale(1.2); }
 .btn-bookmark.active { color: #667eea; }
 .btn-bookmark.active:hover { color: #e74c3c; }
+
+/* Bookmark tab count badges — adapt to active/inactive pill state */
+.tab-count-badge {
+    background: rgba(102,126,234,0.15);
+    color: #667eea;
+    font-weight: 600;
+}
+.nav-link.active .tab-count-badge {
+    background: rgba(255,255,255,0.25);
+    color: #fff;
+}
 
 /* ===== MARK AS COMPLETE BUTTON ===== */
 .btn-mark-complete {
