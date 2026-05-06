@@ -1,67 +1,119 @@
 {% load socialaccount %}
-<nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top" style="box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+<nav class="navbar navbar-expand-lg sticky-top" id="mainNavbar">
     <div class="container">
-          <!-- Brand / Logo -->
-        <a class="navbar-brand fw-bold" href="{% url 'home' %}">
-            <i class="fas fa-graduation-cap text-primary me-2"></i>SRP
-         </a>
-        <!-- Mobile toggle button -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <!-- Brand -->
+        <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="{% url 'home' %}">
+            <span class="brand-icon"><i class="fas fa-graduation-cap"></i></span>
+            <span class="brand-text">SRP</span>
+        </a>
+
+        <!-- Mobile toggle -->
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <!-- Navigation links (centered) -->
-        <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-            <ul class="navbar-nav">
+        <!-- Nav links -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto">
                 <li class="nav-item">
-                    <a class="nav-link {% if request.path == '/' %}active fw-bold{% endif %}" href="{% url 'home' %}">Home</a>
+                    <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'home' %}">
+                        <i class="fas fa-home me-1 d-lg-none"></i>Home
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if '/notes' in request.path %}active fw-bold{% endif %}" href="{% url 'notes' %}">Notes</a>
+                    <a class="nav-link {% if '/notes' in request.path %}active{% endif %}" href="{% url 'notes' %}">
+                        <i class="fas fa-book-open me-1 d-lg-none"></i>Notes
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if '/assignments' in request.path %}active fw-bold{% endif %}" href="{% url 'assignments' %}">Assignments</a>
+                    <a class="nav-link {% if '/assignments' in request.path %}active{% endif %}" href="{% url 'assignments' %}">
+                        <i class="fas fa-clipboard-list me-1 d-lg-none"></i>Assignments
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if '/programs' in request.path %}active fw-bold{% endif %}" href="{% url 'programs' %}">Programs</a>
+                    <a class="nav-link {% if '/programs' in request.path %}active{% endif %}" href="{% url 'programs' %}">
+                        <i class="fas fa-code me-1 d-lg-none"></i>Programs
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if '/tutorials' in request.path %}active fw-bold{% endif %}" href="{% url 'tutorials' %}">Tutorials</a>
+                    <a class="nav-link {% if '/tutorials' in request.path %}active{% endif %}" href="{% url 'tutorials' %}">
+                        <i class="fas fa-play-circle me-1 d-lg-none"></i>Tutorials
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if '/portfolio' in request.path %}active fw-bold{% endif %}" href="{% url 'portfolio' %}">Portfolio</a>
+                    <a class="nav-link {% if '/publications' in request.path %}active{% endif %}" href="{% url 'publications' %}">
+                        <i class="fas fa-file-alt me-1 d-lg-none"></i>Publications
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if '/publications' in request.path %}active fw-bold{% endif %}" href="{% url 'publications' %}">Publications</a>
+                    <a class="nav-link {% if '/portfolio' in request.path %}active{% endif %}" href="{% url 'portfolio' %}">
+                        <i class="fas fa-user me-1 d-lg-none"></i>Portfolio
+                    </a>
                 </li>
             </ul>
-        </div>
 
-        <!-- Right side: dark mode toggle + user authentication -->
-        <div class="d-flex">
-            <button class="btn btn-outline-secondary btn-sm me-2" id="darkModeToggle">
-                <i class="fas fa-moon"></i>
-            </button>
-            {% if user.is_authenticated %}
-            <div class="dropdown">
-                <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown">{{ user.username }}
+            <!-- Right controls -->
+            <div class="d-flex align-items-center gap-2 mt-2 mt-lg-0">
+                <button class="btn btn-ghost-icon rounded-circle" id="darkModeToggle" title="Toggle dark mode">
+                    <i class="fas fa-moon"></i>
                 </button>
-                <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
-                    <li><a class="dropdown-item" href="{% url 'account_logout' %}">Logout</a></li>
-                </ul>
+                {% if user.is_authenticated %}
+                <div class="dropdown">
+                    <button class="btn btn-outline-primary btn-sm rounded-pill dropdown-toggle px-3"
+                            type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-user-circle me-1"></i>{{ user.username }}
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-3 mt-1">
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="{% url 'profile' %}">
+                                <i class="fas fa-cog text-muted" style="width:16px;"></i>Profile Settings
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider my-1"></li>
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center gap-2 py-2 text-danger" href="{% url 'account_logout' %}">
+                                <i class="fas fa-sign-out-alt" style="width:16px;"></i>Logout
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                {% else %}
+                <a href="{% provider_login_url 'google' %}" class="btn btn-primary btn-sm rounded-pill px-3">
+                    <i class="fab fa-google me-1"></i>Login
+                </a>
+                {% endif %}
             </div>
-            {% else %}
-            <a href="{% provider_login_url 'google' %}" class="btn btn-outline-secondary btn-sm"><i class="fab fa-google me-1"></i>Login with Google</a>
-            {% endif %}
         </div>
     </div>
 </nav>
 
-<!-- Header with title and tagline (added class "hero-header" for styling) -->
-<div class="hero-header text-center text-white d-flex align-items-center">
-    <div class="container">
-        <h1 class="h1 mb-3 fw-bold">Student Resource Portal</h1>
-        <p class="lead mb-0">There is no standard answer to life.</p>
+<!-- Hero header — full height on home, compact on other pages -->
+{% if request.path == '/' %}
+<div class="hero-header hero-header--full d-flex align-items-center justify-content-center text-white text-center">
+    <div class="hero-header-overlay"></div>
+    <div class="container position-relative" style="z-index:2;">
+        <p class="lead mb-1 opacity-75">IOE Purwanchal Campus</p>
+        <h1 class="display-5 fw-bold mb-2">Student Resource Portal</h1>
+        <p class="mb-0 opacity-75 fst-italic">"There is no standard answer to life."</p>
     </div>
 </div>
+{% else %}
+<div class="hero-header hero-header--compact d-flex align-items-center text-white">
+    <div class="hero-header-overlay"></div>
+    <div class="container position-relative d-flex align-items-center gap-3" style="z-index:2;">
+        <i class="fas fa-graduation-cap fa-lg opacity-75"></i>
+        <span class="fw-semibold">Student Resource Portal</span>
+        <span class="opacity-50 d-none d-md-inline">/</span>
+        <span class="opacity-75 d-none d-md-inline small">
+            {% if '/notes' in request.path %}Notes
+            {% elif '/assignments' in request.path %}Assignments
+            {% elif '/programs' in request.path %}Programs
+            {% elif '/tutorials' in request.path %}Tutorials
+            {% elif '/publications' in request.path %}Publications
+            {% elif '/portfolio' in request.path %}Portfolio
+            {% elif '/profile' in request.path %}Profile
+            {% endif %}
+        </span>
+    </div>
+</div>
+{% endif %}

@@ -54,16 +54,60 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     // ── PDF preview modal ─────────────────────────────────────────────────────
-    window.previewPDF = function(url) {
+    window.previewPDF = function(url, title) {
         const modalEl = document.getElementById('pdfModal');
-        const iframe = document.getElementById('pdfIframe');
-        const fallback = document.getElementById('pdfFallbackLink');
-        const fullUrl = url.startsWith('/') ? window.location.origin + url : url;
-        iframe.src = fullUrl;
-        if (fallback) fallback.href = fullUrl;
-        const modal = new bootstrap.Modal(modalEl);
+        const iframe  = document.getElementById('pdfIframe');
+        const loader  = document.getElementById('pdfLoader');
+        const errBox  = document.getElementById('pdfError');
+        const errLink = document.getElementById('pdfErrorLink');
+        const dlBtn   = document.getElementById('pdfDownloadBtn');
+        const openBtn = document.getElementById('pdfOpenBtn');
+        const titleEl = document.getElementById('pdfModalTitle');
+
+        // Build absolute URL (handles relative paths like /pdf-preview/note/1/)
+        const fullUrl = url.startsWith('http') ? url : window.location.origin + url;
+
+        // Reset to loading state
+        iframe.style.opacity = '0';
+        iframe.src = 'about:blank';
+        if (loader)  loader.classList.remove('d-none');
+        if (errBox)  errBox.classList.add('d-none');
+        if (titleEl) titleEl.textContent = title || 'PDF Preview';
+        if (dlBtn)   { dlBtn.href = fullUrl; dlBtn.setAttribute('download', title || 'document.pdf'); }
+        if (openBtn) openBtn.href = fullUrl;
+        if (errLink) errLink.href = fullUrl;
+
+        // Use getOrCreateInstance to avoid Bootstrap 5 re-init errors
+        const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+
+        // Set iframe src AFTER modal is shown so it's in the DOM and visible
+        modalEl.addEventListener('shown.bs.modal', function loadPdf() {
+            modalEl.removeEventListener('shown.bs.modal', loadPdf);
+
+            iframe.onload = function() {
+                // brief delay so chrome doesn't flash blank
+                setTimeout(function() {
+                    if (loader) loader.classList.add('d-none');
+                    iframe.style.opacity = '1';
+                }, 100);
+            };
+            iframe.onerror = function() {
+                if (loader) loader.classList.add('d-none');
+                if (errBox) errBox.classList.remove('d-none');
+            };
+
+            iframe.src = fullUrl;
+        });
+
         modal.show();
-        modalEl.addEventListener('hidden.bs.modal', () => { iframe.src = ''; }, { once: true });
+
+        // Cleanup when closed
+        modalEl.addEventListener('hidden.bs.modal', function() {
+            iframe.src = 'about:blank';
+            iframe.style.opacity = '0';
+            if (loader) loader.classList.remove('d-none');
+            if (errBox) errBox.classList.add('d-none');
+        }, { once: true });
     };
 
     // ── Particle explosion on click ───────────────────────────────────────────

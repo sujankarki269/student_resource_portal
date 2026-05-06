@@ -4,7 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q, Count, Prefetch
 from .models import Note, Assignment, Program, Tutorial, Subject, Tag, Announcement, Category, Profile, PortfolioProfile, BlogPost, PublicationCategory, PublicationItem
-from django.http import FileResponse
+from django.http import FileResponse, Http404
+from django.views.decorators.clickjacking import xframe_options_exempt
 import os
 from django.contrib import messages
 from .forms import UserUpdateForm, ProfileUpdateForm
@@ -33,7 +34,7 @@ def home(request):
 
 @login_required
 def notes_list(request):
-    subjects = Subject.objects.all()
+    subjects = Subject.objects.annotate(num_notes=Count('note'))
     selected_subject = request.GET.get('subject')
     query = request.GET.get('q')
     notes = Note.objects.all().order_by('-upload_date')
@@ -54,7 +55,7 @@ def notes_list(request):
 
 @login_required
 def assignments_list(request):
-    subjects = Subject.objects.all()
+    subjects = Subject.objects.annotate(num_notes=Count('assignment'))
     selected_subject = request.GET.get('subject')
     query = request.GET.get('q')
     assignments = Assignment.objects.all().order_by('-upload_date')
@@ -75,7 +76,7 @@ def assignments_list(request):
 
 @login_required
 def programs_list(request):
-    subjects = Subject.objects.all()
+    subjects = Subject.objects.annotate(num_notes=Count('programs'))
     selected_subject = request.GET.get('subject')
     query = request.GET.get('q')
     programs = Program.objects.all().order_by('-upload_date')
@@ -111,6 +112,28 @@ def download_file(request, model, pk):
     obj.save()
     file_path = obj.file.path
     response = FileResponse(open(file_path, 'rb'), as_attachment=True, filename=os.path.basename(file_path))
+    return response
+
+@login_required
+@xframe_options_exempt
+def pdf_preview(request, model, pk):
+    """Serve a PDF inline for the preview modal — no X-Frame-Options header."""
+    model_map = {
+        'note': Note,
+        'assignment': Assignment,
+        'program': Program,
+        'tutorial': Tutorial,
+    }
+    if model not in model_map:
+        raise Http404
+    obj = get_object_or_404(model_map[model], pk=pk)
+    if not obj.file:
+        raise Http404
+    file_path = obj.file.path
+    if not file_path.lower().endswith('.pdf'):
+        raise Http404
+    response = FileResponse(open(file_path, 'rb'), content_type='application/pdf')
+    response['Content-Disposition'] = f'inline; filename="{os.path.basename(file_path)}"'
     return response
 
 @login_required

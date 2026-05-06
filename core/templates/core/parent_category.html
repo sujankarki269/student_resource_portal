@@ -1,40 +1,73 @@
 {% extends 'core/base.html' %}
 {% load static category_tags %}
 
-{% block title %}{{ category.name }}{% endblock %}
+{% block title %}{{ category.name }} | Tutorials{% endblock %}
 
 {% block content %}
-<div class="row">
+<div class="row g-4">
+    <!-- Sidebar -->
     <div class="col-md-3">
-        <div class="card">
-            <div class="card-header"><h5>Categories</h5></div>
-            <div class="card-body">{% render_category_tree %}</div>
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-header bg-transparent border-0 pt-3 pb-1 px-4">
+                <h6 class="fw-semibold mb-0"><i class="fas fa-sitemap me-2 text-info"></i>Categories</h6>
+            </div>
+            <div class="card-body px-3 pb-3">{% render_category_tree %}</div>
         </div>
     </div>
+
+    <!-- Main -->
     <div class="col-md-9">
-        <nav aria-label="breadcrumb">
+        <nav aria-label="breadcrumb" class="mb-3">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'tutorials' %}">Tutorials</a></li>
                 <li class="breadcrumb-item active">{{ category.name }}</li>
             </ol>
         </nav>
-        <h2 class="mb-4">{{ category.name }}</h2>
-        {% if category.description %}<p class="lead">{{ category.description|linebreaks }}</p>{% endif %}
 
-        <h4 class="mt-5">Chapters</h4>
-        <div class="row">
+        <div class="d-flex align-items-start gap-3 mb-4">
+            <div class="rounded-3 p-3 flex-shrink-0" style="background:rgba(13,202,240,0.12);">
+                <i class="fas fa-folder-open fa-2x text-info"></i>
+            </div>
+            <div>
+                <h2 class="fw-bold mb-1">{{ category.name }}</h2>
+                {% if category.description %}
+                <p class="text-muted mb-0">{{ category.description }}</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <h5 class="fw-semibold mb-3 text-muted">
+            <i class="fas fa-list me-2"></i>Chapters
+            <span class="badge bg-info-subtle text-info rounded-pill ms-2">{{ subcategories.count }}</span>
+        </h5>
+
+        <div class="row g-3">
             {% for sub in subcategories %}
-            <div class="col-md-4 mb-4 d-flex">
-                <div class="card h-100 w-100">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">{{ sub.name }}</h5>
-                        <p class="card-text flex-grow-1">{{ sub.description|truncatechars:80|linebreaks }}</p>
-                        <a href="{% url 'category_detail' sub.slug %}" class="btn btn-sm btn-outline-primary mt-auto">Explore</a>
+            <div class="col-md-6 col-lg-4">
+                <a href="{% url 'category_detail' sub.slug %}" class="text-decoration-none">
+                    <div class="card border-0 shadow-sm rounded-4 h-100 chapter-card hover-scale">
+                        <div class="card-body p-4">
+                            <div class="chapter-num mb-2">
+                                <span class="badge rounded-pill" style="background:linear-gradient(135deg,#667eea,#764ba2);font-size:.75rem;">
+                                    Ch. {{ forloop.counter }}
+                                </span>
+                            </div>
+                            <h6 class="fw-semibold text-dark mb-2">{{ sub.name }}</h6>
+                            {% if sub.description %}
+                            <p class="text-muted small mb-0">{{ sub.description|truncatechars:70 }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="card-footer bg-transparent border-0 pt-0 pb-3 px-4">
+                            <span class="text-primary small fw-medium">Read &rarr;</span>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
             {% empty %}
-            <p class="text-muted">No subcategories.</p>
+            <div class="col-12 text-center py-5">
+                <i class="fas fa-folder-open fa-3x text-muted mb-3"></i>
+                <p class="text-muted">No chapters yet.</p>
+            </div>
             {% endfor %}
         </div>
     </div>

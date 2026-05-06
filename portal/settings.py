@@ -141,6 +141,9 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'core/static')]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Allow same-origin iframes (needed for in-page PDF preview)
+X_FRAME_OPTIONS = 'SAMEORIGIN'
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 

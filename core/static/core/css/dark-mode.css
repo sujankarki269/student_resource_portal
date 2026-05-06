@@ -8,7 +8,7 @@ body.dark-mode {
 /* ===== Text & Links (keep your original colors) ===== */
 body.dark-mode,
 .dark-mode textarea,
-.dark-mode input
+.dark-mode input,
 .dark-mode button,
 .dark-mode select,
 .dark-mode keygen,
@@ -34,13 +34,32 @@ body.dark-mode,
     color: #c0c0c0;
 }
 
-/* ===== Navbar (your existing) ===== */
-.dark-mode .navbar {
-    background: rgba(30, 30, 30, 0.85) !important;
-    border-bottom-color: rgba(255,255,255,0.1);
+/* ===== Navbar ===== */
+.dark-mode #mainNavbar {
+    background: rgba(22, 22, 35, 0.92) !important;
+    border-bottom-color: rgba(255,255,255,0.07);
 }
 .dark-mode .navbar .nav-link {
-    color: #f0f0f0 !important;
+    color: #c8d6e5 !important;
+}
+.dark-mode .navbar .nav-link:hover,
+.dark-mode .navbar .nav-link.active {
+    color: #ffffff !important;
+}
+.dark-mode .brand-text {
+    background: linear-gradient(135deg, #7b9fef, #9b7fd4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.dark-mode .btn-ghost-icon {
+    border-color: rgba(255,255,255,0.15);
+    color: #c8d6e5;
+}
+.dark-mode .btn-ghost-icon:hover {
+    background: rgba(102,126,234,0.2);
+    border-color: #7b9fef;
+    color: #fff;
 }
 .dark-mode .navbar .btn-outline-secondary {
     border-color: #555;
@@ -323,4 +342,199 @@ body.dark-mode,
 }
 .dark-mode .border {
     border-color: #3a3f4a !important;
+}
+
+/* ===== Stat Cards ===== */
+.dark-mode .stat-card {
+    background: #2c2f36;
+    border-color: #3a3f4a;
+}
+.dark-mode .stat-card:hover {
+    box-shadow: 0 12px 25px rgba(0,0,0,0.4);
+}
+.dark-mode .stat-label {
+    color: #888 !important;
+}
+
+/* ===== Quick access buttons ===== */
+.dark-mode .quick-access-btn {
+    color: #b0c4d9;
+}
+
+/* ===== Assignment cards ===== */
+.dark-mode .assignment-card {
+    background: #2c2f36;
+    border-color: #3a3f4a;
+}
+.dark-mode .assignment-card:hover {
+    box-shadow: 0 12px 25px rgba(0,0,0,0.4) !important;
+}
+
+/* ===== Tutorial category cards ===== */
+.dark-mode .tutorial-category-card {
+    background: #2c2f36;
+    border-color: #3a3f4a;
+}
+.dark-mode .tutorial-category-card .card-title {
+    color: #f0f0f0 !important;
+}
+.dark-mode .tutorial-icon {
+    background: rgba(13,202,240,0.15);
+}
+
+/* ===== Publication cards ===== */
+.dark-mode .pub-card {
+    background: #2c2f36;
+}
+
+/* ===== Breadcrumb ===== */
+.dark-mode .breadcrumb {
+    background: transparent;
+}
+.dark-mode .breadcrumb-item a {
+    color: #5ec8d9;
+}
+.dark-mode .breadcrumb-item.active {
+    color: #b0c4d9;
+}
+.dark-mode .breadcrumb-item + .breadcrumb-item::before {
+    color: #666;
+}
+
+/* ===== Input group text ===== */
+.dark-mode .input-group-text {
+    background-color: #3a3f4a;
+    border-color: #4a4f5a;
+    color: #b0c4d9;
+}
+
+/* ===== Back-to-top ===== */
+.dark-mode .back-to-top {
+    background: #3a6ea5;
+    border-color: #3a6ea5;
+    box-shadow: 0 4px 15px rgba(58,110,165,0.5);
+}
+
+/* ===== PDF Modal ===== */
+.dark-mode #pdfModal .modal-content {
+    background: #1e2228;
+}
+
+/* ===== Hero header ===== */
+.dark-mode .hero-header {
+    filter: brightness(0.75);
+}
+
+/* ===== Note/assignment list card borders ===== */
+.dark-mode .note-list-card,
+.dark-mode .note-card {
+    background: #2c2f36;
+    border-color: #3a3f4a;
+}
+
+/* ===== Recent list ===== */
+.dark-mode .list-group.recent-list .list-group-item {
+    background: #2c2f36;
+    border-color: #3a3f4a;
+    color: #e0e0e0;
+}
+.dark-mode .list-group.recent-list .list-group-item:hover {
+    background: #353a44;
+}
+
+/* ===== Badge soft colours ===== */
+.dark-mode .bg-primary-subtle {
+    background-color: rgba(102,126,234,0.25) !important;
+}
+.dark-mode .bg-warning-subtle {
+    background-color: rgba(255,193,7,0.2) !important;
+}
+.dark-mode .bg-info-subtle {
+    background-color: rgba(13,202,240,0.2) !important;
+}
+.dark-mode .text-warning-emphasis {
+    color: #ffc107 !important;
+}
+
+/* ===== Programs page ===== */
+.dark-mode .program-card-new {
+    background: #2c2f36;
+}
+.dark-mode .program-card-new:hover {
+    box-shadow: 0 14px 30px rgba(0,0,0,0.4) !important;
+}
+.dark-mode .code-preview-wrapper {
+    border-color: rgba(255,255,255,0.08);
+}
+
+/* ===== Sidebar ===== */
+.dark-mode .sidebar-sticky .card {
+    background: #2c2f36;
+    border-color: #3a3f4a;
+}
+.dark-mode .sidebar-item {
+    background: #2c2f36 !important;
+    color: #c8d6e5;
+    border-color: #3a3f4a !important;
+}
+.dark-mode .sidebar-item:hover:not(.active) {
+    background: rgba(102,126,234,0.15) !important;
+    color: #7b9fef !important;
+}
+.dark-mode .sidebar-item.active {
+    background: rgba(102,126,234,0.2) !important;
+    color: #7b9fef !important;
+    border-left-color: #7b9fef !important;
+}
+
+/* ===== Profile page ===== */
+.dark-mode .profile-avatar-bg {
+    background: rgba(255,255,255,0.15);
+}
+
+/* ===== Chapter cards ===== */
+.dark-mode .chapter-card {
+    background: #2c2f36;
+}
+.dark-mode .chapter-card h6 {
+    color: #f0f0f0 !important;
+}
+
+/* ===== Tutorial article ===== */
+.dark-mode .tutorial-content {
+    color: #c8d6e5;
+}
+.dark-mode .tutorial-content h1,
+.dark-mode .tutorial-content h2,
+.dark-mode .tutorial-content h3,
+.dark-mode .tutorial-content h4,
+.dark-mode .tutorial-content h5 {
+    color: #f0f0f0;
+}
+.dark-mode .tutorial-content h2 {
+    border-bottom-color: rgba(102,126,234,0.3);
+}
+.dark-mode .tutorial-content blockquote {
+    background: rgba(102,126,234,0.1);
+    color: #b0c4d9;
+}
+.dark-mode .tutorial-content table th {
+    background: rgba(102,126,234,0.15);
+}
+.dark-mode .tutorial-content table th,
+.dark-mode .tutorial-content table td {
+    border-color: #3a3f4a;
+}
+
+/* ===== Footer already dark, reduce double-darkening ===== */
+.dark-mode footer {
+    background: linear-gradient(135deg, #111118 0%, #0d1526 50%, #0a2040 100%) !important;
+}
+
+/* ===== Section title gradient fix for dark mode ===== */
+.dark-mode .section-title {
+    background: linear-gradient(135deg, #7b9fef, #9b7fd4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }

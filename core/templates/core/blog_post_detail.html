@@ -1,35 +1,53 @@
 {% extends 'core/base.html' %}
 {% load static %}
 
-{% block title %}{{ post.title }}{% endblock %}
+{% block title %}{{ post.title }} | Tutorials{% endblock %}
 
 {% block content %}
-<div class="container py-5">
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'tutorials' %}">Tutorials</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'category_detail' post.category.slug %}">{{ post.category.name }}</a></li>
-            <li class="breadcrumb-item active">{{ post.title }}</li>
-        </ol>
-    </nav>
+<div class="row justify-content-center">
+    <div class="col-lg-9">
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'tutorials' %}">Tutorials</a></li>
+                <li class="breadcrumb-item">
+                    <a href="{% url 'category_detail' post.category.slug %}">{{ post.category.name }}</a>
+                </li>
+                <li class="breadcrumb-item active text-truncate" style="max-width:200px;">{{ post.title }}</li>
+            </ol>
+        </nav>
 
-    <article class="blog-post">
-        <h1 class="mb-3">{{ post.title }}</h1>
-        <p class="text-muted">Published {{ post.created_date|date:"F j, Y" }} | {{ post.views }} views</p>
-        <hr>
-        <div class="blog-content">
-            {{ post.content|safe }}
-        </div>
-    </article>
+        <article class="tutorial-article">
+            <header class="mb-5">
+                <h1 class="fw-bold lh-base mb-3">{{ post.title }}</h1>
+                {% if post.summary %}
+                <p class="lead text-muted">{{ post.summary }}</p>
+                {% endif %}
+                <div class="d-flex flex-wrap align-items-center gap-3 text-muted small pt-3 border-top">
+                    <span><i class="fas fa-calendar me-1"></i>{{ post.created_date|date:"F j, Y" }}</span>
+                    {% if post.updated_date != post.created_date %}
+                    <span><i class="fas fa-sync-alt me-1"></i>Updated {{ post.updated_date|date:"M j, Y" }}</span>
+                    {% endif %}
+                    <span><i class="fas fa-eye me-1"></i>{{ post.views }} views</span>
+                    <a href="{% url 'category_detail' post.category.slug %}"
+                       class="badge bg-info-subtle text-info rounded-pill text-decoration-none">
+                        {{ post.category.name }}
+                    </a>
+                </div>
+            </header>
+
+            <div class="blog-content tutorial-content">
+                {{ post.content|safe }}
+            </div>
+
+            <footer class="mt-5 pt-4 border-top d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <a href="{% url 'category_detail' post.category.slug %}" class="btn btn-outline-primary rounded-pill btn-sm">
+                    <i class="fas fa-arrow-left me-1"></i>Back to {{ post.category.name }}
+                </a>
+                <a href="{% url 'tutorials' %}" class="btn btn-outline-secondary rounded-pill btn-sm">
+                    <i class="fas fa-th me-1"></i>All Tutorials
+                </a>
+            </footer>
+        </article>
+    </div>
 </div>
-
-<style>
-    .blog-content img {
-        max-width: 100%;
-        height: auto;
-    }
-    .blog-content {
-        overflow-x: auto;
-    }
-</style>
 {% endblock %}

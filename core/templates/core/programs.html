@@ -1,81 +1,140 @@
 {% extends 'core/base.html' %}
 {% load static %}
 
-{% block title %}Programs{% endblock %}
+{% block title %}Programs | Student Portal{% endblock %}
 
 {% block content %}
 <div class="row">
-    <!-- Sidebar with subjects -->
     <div class="col-md-3">
         {% include 'core/includes/sidebar.html' with subjects=subjects selected=selected_subject %}
     </div>
-
-    <!-- Main content -->
     <div class="col-md-9">
-        <h2 class="mb-4">💻 Programs</h2>
-        <form method="get" class="row g-2 mb-4">
-            <div class="col-auto">
-                <input type="text" name="q" class="form-control" placeholder="Search programs..." value="{{ query|default:'' }}">
-            </div>
-            <div class="col-auto">
-                <button type="submit" class="btn btn-primary">Filter</button>
-            </div>
-        </form>
+        <!-- Header + Search -->
+        <div class="d-flex flex-wrap align-items-center justify-content-between mb-3 gap-2">
+            <h2 class="mb-0"><i class="fas fa-code text-success me-2"></i>Programs</h2>
+            <form method="get" class="d-flex gap-2 flex-wrap">
+                {% if selected_subject %}<input type="hidden" name="subject" value="{{ selected_subject }}">{% endif %}
+                <div class="input-group input-group-sm" style="min-width:220px;">
+                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                    <input type="text" name="q" class="form-control" placeholder="Search programs..." value="{{ query|default:'' }}">
+                </div>
+                <button type="submit" class="btn btn-sm btn-success rounded-pill px-3">Filter</button>
+                {% if query or selected_subject %}
+                <a href="{% url 'programs' %}" class="btn btn-sm btn-outline-secondary rounded-pill">Clear</a>
+                {% endif %}
+            </form>
+        </div>
 
-        <!-- Cards grid -->
+        {% if query or selected_subject %}
+        <p class="text-muted small mb-3">
+            {{ programs.paginator.count }} result{{ programs.paginator.count|pluralize }}
+            {% if query %} for "<strong>{{ query }}</strong>"{% endif %}
+        </p>
+        {% endif %}
+
         <div class="row g-4">
             {% for program in programs %}
-                <div class="col-md-6" id="program-{{ program.id }}">
-                    <div class="card h-100 program-card">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ program.title }}</h5>
-                            <p class="card-text">{{ program.description|truncatechars:100 }}</p>
-                            <p><small>Language: {{ program.language }} | Downloads: {{ program.downloads }}</small></p>
-                            <div class="program-code-preview">
-                                <pre><code class="language-{{ program.language }}">{{ program.code_snippet|truncatechars:200 }}</code></pre>
+            <div class="col-md-6" id="program-{{ program.id }}">
+                <div class="card border-0 shadow-sm rounded-4 program-card-new h-100">
+                    <div class="card-body d-flex flex-column p-4">
+                        <!-- Title + language badge -->
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h5 class="card-title fw-semibold mb-0 me-2">{{ program.title }}</h5>
+                            <span class="lang-badge lang-{{ program.language|lower }} flex-shrink-0">
+                                {{ program.language|upper }}
+                            </span>
+                        </div>
+
+                        {% if program.subject %}
+                        <span class="badge bg-success-subtle text-success rounded-pill mb-2" style="width:fit-content;font-size:.75rem;">
+                            {{ program.subject.name }}
+                        </span>
+                        {% endif %}
+
+                        {% if program.description %}
+                        <p class="card-text text-muted small mb-3">{{ program.description|truncatechars:100 }}</p>
+                        {% endif %}
+
+                        <!-- Code preview -->
+                        <div class="code-preview-wrapper rounded-3 mb-3 position-relative">
+                            <div class="code-preview-bar d-flex align-items-center justify-content-between px-3 py-1">
+                                <span class="text-muted" style="font-size:.75rem;">
+                                    <i class="fas fa-circle me-1" style="color:#ff5f56;font-size:.5rem;"></i>
+                                    <i class="fas fa-circle me-1" style="color:#ffbd2e;font-size:.5rem;"></i>
+                                    <i class="fas fa-circle" style="color:#27c93f;font-size:.5rem;"></i>
+                                </span>
+                                <button class="btn btn-xs copy-btn" onclick="copyCode(this, {{ forloop.counter }})">
+                                    <i class="fas fa-copy me-1"></i><span>Copy</span>
+                                </button>
                             </div>
-                            <div class="mt-2">
-                                {% if program.file %}
-                                <a href="{% url 'download' 'program' program.id %}" class="btn btn-sm btn-success" onclick="showDownloadToast('Downloading {{ program.title }}')">Download</a>
-                                {% endif %}
-                                <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#codeModal{{ program.id }}">View Full Code</button>
-                            </div>
+                            <pre class="code-preview mb-0" id="code-{{ forloop.counter }}"><code class="language-{{ program.language|lower }}">{{ program.code_snippet|truncatechars:300 }}</code></pre>
+                        </div>
+
+                        <div class="d-flex align-items-center gap-2 mt-auto">
+                            <small class="text-muted me-auto"><i class="fas fa-download me-1 text-success"></i>{{ program.downloads }}</small>
+                            <button class="btn btn-sm btn-outline-secondary rounded-pill"
+                                    data-bs-toggle="modal" data-bs-target="#codeModal{{ program.id }}">
+                                <i class="fas fa-expand-alt me-1"></i>Full Code
+                            </button>
+                            {% if program.file %}
+                            <a href="{% url 'download' 'program' program.id %}" class="btn btn-sm btn-success rounded-pill"
+                               onclick="showDownloadToast('Downloading {{ program.title|escapejs }}')">
+                                <i class="fas fa-download me-1"></i>Download
+                            </a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
+            </div>
             {% empty %}
-                <p class="text-muted">No programs found.</p>
+            <div class="col-12">
+                <div class="text-center py-5">
+                    <i class="fas fa-code fa-3x text-muted mb-3"></i>
+                    <p class="text-muted fs-5">No programs found{% if query %} for "{{ query }}"{% endif %}.</p>
+                    {% if query or selected_subject %}<a href="{% url 'programs' %}" class="btn btn-outline-success btn-sm rounded-pill">Clear filters</a>{% endif %}
+                </div>
+            </div>
             {% endfor %}
         </div>
 
-        <!-- Pagination -->
         {% if programs.has_other_pages %}
         <nav class="mt-4">
-            <ul class="pagination">
+            <ul class="pagination pagination-sm justify-content-center">
                 {% if programs.has_previous %}
-                <li class="page-item"><a class="page-link" href="?page={{ programs.previous_page_number }}{% if query %}&q={{ query }}{% endif %}{% if selected_subject %}&subject={{ selected_subject }}{% endif %}">Previous</a></li>
+                <li class="page-item"><a class="page-link rounded-pill me-1" href="?page={{ programs.previous_page_number }}{% if query %}&q={{ query }}{% endif %}{% if selected_subject %}&subject={{ selected_subject }}{% endif %}">&laquo; Prev</a></li>
                 {% endif %}
                 {% for num in programs.paginator.page_range %}
-                <li class="page-item {% if programs.number == num %}active{% endif %}"><a class="page-link" href="?page={{ num }}{% if query %}&q={{ query }}{% endif %}{% if selected_subject %}&subject={{ selected_subject }}{% endif %}">{{ num }}</a></li>
+                <li class="page-item {% if programs.number == num %}active{% endif %}">
+                    <a class="page-link rounded-pill me-1" href="?page={{ num }}{% if query %}&q={{ query }}{% endif %}{% if selected_subject %}&subject={{ selected_subject }}{% endif %}">{{ num }}</a>
+                </li>
                 {% endfor %}
                 {% if programs.has_next %}
-                <li class="page-item"><a class="page-link" href="?page={{ programs.next_page_number }}{% if query %}&q={{ query }}{% endif %}{% if selected_subject %}&subject={{ selected_subject }}{% endif %}">Next</a></li>
+                <li class="page-item"><a class="page-link rounded-pill" href="?page={{ programs.next_page_number }}{% if query %}&q={{ query }}{% endif %}{% if selected_subject %}&subject={{ selected_subject }}{% endif %}">Next &raquo;</a></li>
                 {% endif %}
             </ul>
         </nav>
         {% endif %}
 
-        <!-- Code Modals (outside the grid) -->
+        <!-- Full code modals -->
         {% for program in programs %}
         <div class="modal fade" id="codeModal{{ program.id }}" tabindex="-1">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">{{ program.title }} - Full Code</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content rounded-4 border-0 shadow-lg overflow-hidden">
+                    <div class="modal-header py-2 px-4" style="background:linear-gradient(135deg,#1e1e2e,#2d2d44);">
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="lang-badge lang-{{ program.language|lower }}">{{ program.language|upper }}</span>
+                            <h6 class="modal-title text-white mb-0">{{ program.title }}</h6>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-sm btn-outline-light rounded-pill px-3"
+                                    onclick="copyFullCode('modalCode{{ program.id }}')">
+                                <i class="fas fa-copy me-1"></i>Copy
+                            </button>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        <pre><code class="language-{{ program.language }}">{{ program.code_snippet }}</code></pre>
+                    <div class="modal-body p-0" style="background:#1e1e2e; max-height:70vh; overflow-y:auto;">
+                        <pre class="mb-0 p-4" style="background:transparent;"><code id="modalCode{{ program.id }}" class="language-{{ program.language|lower }}">{{ program.code_snippet }}</code></pre>
                     </div>
                 </div>
             </div>
@@ -83,4 +142,22 @@
         {% endfor %}
     </div>
 </div>
+
+<script>
+function copyCode(btn, id) {
+    const code = document.getElementById('code-' + id);
+    navigator.clipboard.writeText(code.textContent).then(() => {
+        const span = btn.querySelector('span');
+        span.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => { span.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    });
+}
+function copyFullCode(id) {
+    const code = document.getElementById(id);
+    navigator.clipboard.writeText(code.textContent).then(() => {
+        showDownloadToast('Code copied to clipboard!');
+    });
+}
+</script>
 {% endblock %}

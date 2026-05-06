@@ -1,40 +1,65 @@
-<!-- core/templates/core/subcategory_detail.html -->
 {% extends 'core/base.html' %}
 {% load static category_tags %}
 
-{% block title %}{{ category.name }}{% endblock %}
+{% block title %}{{ category.name }} | Tutorials{% endblock %}
 
 {% block content %}
-<div class="row">
+<div class="row g-4">
+    <!-- Sidebar -->
     <div class="col-md-3">
-        <div class="card">
-            <div class="card-header"><h5>Categories</h5></div>
-            <div class="card-body">{% render_category_tree %}</div>
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-header bg-transparent border-0 pt-3 pb-1 px-4">
+                <h6 class="fw-semibold mb-0"><i class="fas fa-sitemap me-2 text-info"></i>Categories</h6>
+            </div>
+            <div class="card-body px-3 pb-3">{% render_category_tree %}</div>
         </div>
     </div>
+
+    <!-- Content -->
     <div class="col-md-9">
-        <nav aria-label="breadcrumb">
+        <nav aria-label="breadcrumb" class="mb-3">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'tutorials' %}">Tutorials</a></li>
+                {% if category.parent %}
+                <li class="breadcrumb-item">
+                    <a href="{% url 'category_detail' category.parent.slug %}">{{ category.parent.name }}</a>
+                </li>
+                {% endif %}
                 <li class="breadcrumb-item active">{{ category.name }}</li>
             </ol>
         </nav>
 
-        <h2 class="mb-4">{{ category.name }}</h2>
-        {% if category.description %}<p class="lead">{{ category.description|linebreaksbr }}</p>{% endif %}
-
         {% if display_post %}
-        <article class="blog-post">
-            <p class="text-muted">
-                Published {{ display_post.created_date|date:"F j, Y" }} | 
-                {{ display_post.views }} views
-            </p>
-            <div class="blog-content">{{ display_post.content|safe }}</div>
+        <article class="tutorial-article">
+            <header class="mb-4 pb-3 border-bottom">
+                <h1 class="fw-bold">{{ display_post.title }}</h1>
+                <div class="d-flex align-items-center gap-3 text-muted small mt-2">
+                    <span><i class="fas fa-calendar me-1"></i>{{ display_post.created_date|date:"F j, Y" }}</span>
+                    <span><i class="fas fa-eye me-1"></i>{{ display_post.views }} views</span>
+                    <span class="badge bg-info-subtle text-info rounded-pill">{{ category.name }}</span>
+                </div>
+            </header>
+            <div class="blog-content tutorial-content">
+                {{ display_post.content|safe }}
+            </div>
         </article>
         {% else %}
-        <p class="text-muted">No content yet.</p>
+        <div class="d-flex align-items-start gap-3 mb-4">
+            <div class="rounded-3 p-3 flex-shrink-0" style="background:rgba(13,202,240,0.12);">
+                <i class="fas fa-file-alt fa-2x text-info"></i>
+            </div>
+            <div>
+                <h2 class="fw-bold mb-1">{{ category.name }}</h2>
+                {% if category.description %}
+                <p class="text-muted mb-0">{{ category.description|linebreaksbr }}</p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="text-center py-5 text-muted">
+            <i class="fas fa-pen-fancy fa-3x mb-3 opacity-25"></i>
+            <p>No content published yet for this chapter.</p>
+        </div>
         {% endif %}
     </div>
 </div>
-
 {% endblock %}

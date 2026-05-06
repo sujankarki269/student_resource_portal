@@ -1,13 +1,24 @@
-<div class="sidebar">
-    <h5>Subjects</h5>
-    <ul class="list-group">
-        <li class="list-group-item {% if not selected %}active{% endif %}">
-            <a href="?{% if query %}q={{ query }}&{% endif %}" class="text-decoration-none">All</a>
-        </li>
-        {% for subject in subjects %}
-        <li class="list-group-item {% if selected == subject.id|stringformat:'s' %}active{% endif %}">
-            <a href="?subject={{ subject.id }}{% if query %}&q={{ query }}{% endif %}" class="text-decoration-none">{{ subject.name }}</a>
-        </li>
-        {% endfor %}
-    </ul>
+<div class="sidebar-sticky">
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+        <div class="card-header border-0 py-3 px-4" style="background:linear-gradient(135deg,#667eea,#764ba2);">
+            <h6 class="mb-0 text-white fw-semibold"><i class="fas fa-filter me-2"></i>Filter by Subject</h6>
+        </div>
+        <div class="list-group list-group-flush">
+            <a href="?{% if query %}q={{ query }}{% endif %}"
+               class="list-group-item list-group-item-action d-flex justify-content-between align-items-center px-4 py-2 sidebar-item {% if not selected %}active{% endif %}">
+                <span><i class="fas fa-th-list me-2 opacity-50"></i>All Subjects</span>
+            </a>
+            {% for subject in subjects %}
+            <a href="?subject={{ subject.id }}{% if query %}&q={{ query }}{% endif %}"
+               class="list-group-item list-group-item-action d-flex justify-content-between align-items-center px-4 py-2 sidebar-item {% if selected == subject.id|stringformat:'s' %}active{% endif %}">
+                <span class="text-truncate me-2">{{ subject.name }}</span>
+                {% if subject.num_notes is not None %}
+                <span class="badge rounded-pill {% if selected == subject.id|stringformat:'s' %}bg-white text-primary{% else %}bg-primary-subtle text-primary{% endif %} flex-shrink-0">
+                    {{ subject.num_notes }}
+                </span>
+                {% endif %}
+            </a>
+            {% endfor %}
+        </div>
+    </div>
 </div>
