@@ -25,7 +25,7 @@
                 {% else %}
                     <span class="me-1"></span>
                 {% endif %}
-                <a href="{% url 'category_detail' category.slug %}"
+                <a href="{% url 'category_detail' category.slug %}#main-content"
                    class="{% if category.slug == current_slug %}active{% endif %}">
                     {{ category.name }}
                 </a>

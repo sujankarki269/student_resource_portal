@@ -22,7 +22,7 @@
 
     {% include 'core/includes/navbar.html' %}
 
-    <main class="container my-4">
+    <main class="container my-4" id="main-content">
         {% if active_announcements %}
         <div class="alert alert-info alert-dismissible fade show rounded-4" role="alert">
             <strong><i class="fas fa-bullhorn me-1"></i>Announcements:</strong>
@@ -110,6 +110,9 @@
     <script src="{% static 'core/js/fish.js' %}"></script>
 
     <style>
+    #main-content {
+        scroll-margin-top: 70px;
+    }
     @media only screen and (max-width: 767px){
         #sidebar_search_box input[type=text]{width:calc(100% - 24px)}
     }

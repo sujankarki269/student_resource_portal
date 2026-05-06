@@ -7,7 +7,7 @@
             <ul class="category-tree list-unstyled">
                 {% for subject in subjects %}
                 <li>
-                    <a href="?subject={{ subject.id }}{% if query %}&q={{ query }}{% endif %}"
+                    <a href="?subject={{ subject.id }}{% if query %}&q={{ query }}{% endif %}#main-content"
                        class="d-flex justify-content-between align-items-center {% if selected == subject.id|stringformat:'s' %}active{% endif %}">
                         <span class="text-truncate">{{ subject.name }}</span>
                         {% if subject.num_notes is not None %}
