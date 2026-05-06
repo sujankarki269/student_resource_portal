@@ -86,20 +86,6 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
-class Tutorial(models.Model):
-    title = models.CharField(max_length=200)
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True, related_name='tutorials')
-    content = models.TextField(help_text="Write tutorial content here")
-    video_link = models.URLField(blank=True, help_text="YouTube or Vimeo link")
-    file = models.FileField(upload_to='tutorials/', blank=True, null=True)
-    upload_date = models.DateTimeField(default=timezone.now)
-    uploader = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    downloads = models.IntegerField(default=0)
-    views = models.IntegerField(default=0)
-    tags = models.ManyToManyField(Tag, blank=True)
-
-    def __str__(self):
-        return self.title
 
 class Announcement(models.Model):
     title = models.CharField(max_length=200)

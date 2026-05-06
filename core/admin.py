@@ -6,8 +6,8 @@ from django.db.models import Count
 
 from .models import (
     Subject, Note, Assignment, Program,
-    Category, Tutorial, Tag, Announcement,
-    Profile, Bookmark, TutorialProgress,
+    Category, Tag, Announcement,
+    Profile,
     WorkExperience, Education, Publication,
     HonorAward, SubjectTaught, Skill, PortfolioProfile,
     BlogPost, PublicationCategory, PublicationItem,
@@ -240,41 +240,6 @@ class BlogPostAdmin(admin.ModelAdmin):
     )
 
 
-# ─────────────────────────────────────────────
-#  Bookmark & TutorialProgress
-# ─────────────────────────────────────────────
-@admin.register(Bookmark)
-class BookmarkAdmin(admin.ModelAdmin):
-    list_display    = ('user', 'resource_type', 'resource_title', 'created_at')
-    list_filter     = ('created_at',)
-    search_fields   = ('user__username', 'note__title', 'assignment__title', 'program__title')
-    readonly_fields = ('user', 'note', 'assignment', 'program', 'created_at')
-    ordering        = ('-created_at',)
-
-    @admin.display(description='Type')
-    def resource_type(self, obj):
-        if obj.note_id:       return '📖 Note'
-        if obj.assignment_id: return '📋 Assignment'
-        if obj.program_id:    return '💻 Program'
-        return '—'
-
-    @admin.display(description='Resource')
-    def resource_title(self, obj):
-        return str(obj.note or obj.assignment or obj.program or '—')
-
-
-@admin.register(TutorialProgress)
-class TutorialProgressAdmin(admin.ModelAdmin):
-    list_display    = ('user', 'blog_post', 'category_name', 'completed_at')
-    list_filter     = ('completed_at', 'blog_post__category')
-    search_fields   = ('user__username', 'blog_post__title')
-    readonly_fields = ('user', 'blog_post', 'completed_at')
-    ordering        = ('-completed_at',)
-
-    @admin.display(description='Category')
-    def category_name(self, obj):
-        return obj.blog_post.category.name if obj.blog_post.category else '—'
-
 
 # ─────────────────────────────────────────────
 #  Publications
@@ -381,5 +346,3 @@ class CustomUserAdmin(UserAdmin):
 admin.site.unregister(User)
 admin.site.register(User, CustomUserAdmin)
 
-# Legacy — kept for data access only
-admin.site.register(Tutorial)

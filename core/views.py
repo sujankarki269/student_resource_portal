@@ -1,9 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.db.models import Q, Count, Prefetch
-from .models import Note, Assignment, Program, Tutorial, Subject, Tag, Announcement, Category, Profile, PortfolioProfile, BlogPost, PublicationCategory, PublicationItem, Bookmark, TutorialProgress
+from django.db.models import Q, Count
+from .models import Note, Assignment, Program, Subject, Announcement, Category, Profile, PortfolioProfile, BlogPost, PublicationCategory, Bookmark, TutorialProgress
 from django.http import FileResponse, Http404, JsonResponse
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django.views.decorators.http import require_POST
@@ -134,7 +133,6 @@ def download_file(request, model, pk):
         'note': Note,
         'assignment': Assignment,
         'program': Program,
-        'tutorial': Tutorial
     }
     obj = get_object_or_404(model_map[model], pk=pk)
     obj.downloads += 1
@@ -151,7 +149,6 @@ def pdf_preview(request, model, pk):
         'note': Note,
         'assignment': Assignment,
         'program': Program,
-        'tutorial': Tutorial,
     }
     if model not in model_map:
         raise Http404
