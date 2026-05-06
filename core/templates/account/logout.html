@@ -1,22 +1,129 @@
-{% extends 'core/base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Out | Student Resource Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            min-height: 100vh;
+            background: #f8f9fa;
+            font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
 
-{% block title %}Sign Out{% endblock %}
+        .auth-card {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 1.2rem;
+            padding: 2.5rem 2rem;
+            width: 100%;
+            max-width: 360px;
+            box-shadow: 0 4px 24px rgba(102,126,234,0.10);
+            text-align: center;
+        }
 
-{% block content %}
-<div class="card shadow-lg border-0 rounded-4 mx-auto mt-5" style="width: 350px;">
-    <div class="card-body p-4 text-center">
-        <h2 class="fw-bold mb-3">Sign Out</h2>
-        <p class="text-muted mb-4">Are you sure you want to sign out?</p>
+        .auth-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #fff;
+            margin: 0 auto 1.2rem;
+            box-shadow: 0 8px 20px rgba(102,126,234,0.30);
+        }
+
+        .auth-card h1 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: .3rem;
+        }
+
+        .auth-card p.subtitle {
+            font-size: .88rem;
+            color: #6b7280;
+            margin-bottom: 1.8rem;
+        }
+
+        .btn-signout {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: .5rem;
+            width: 100%;
+            padding: .8rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            border-radius: .9rem;
+            color: #fff;
+            font-size: .92rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: .7rem;
+            transition: opacity .2s, transform .2s;
+            box-shadow: 0 4px 16px rgba(102,126,234,0.28);
+        }
+        .btn-signout:hover { opacity: .9; transform: translateY(-1px); }
+
+        .btn-cancel {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: .5rem;
+            width: 100%;
+            padding: .75rem;
+            background: #f3f4f6;
+            border: 1px solid #e5e7eb;
+            border-radius: .9rem;
+            color: #374151;
+            font-size: .88rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background .2s;
+        }
+        .btn-cancel:hover { background: #e9ecef; color: #1a1a2e; }
+
+        .auth-footer {
+            margin-top: 1.5rem;
+            font-size: .72rem;
+            color: #9ca3af;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="auth-card">
+        <div class="auth-icon"><i class="fas fa-graduation-cap"></i></div>
+        <h1>Sign Out?</h1>
+        <p class="subtitle">Your bookmarks and progress will be saved.</p>
+
         <form method="post" action="{% url 'account_logout' %}">
             {% csrf_token %}
             {% if redirect_field_value %}
-                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}">
             {% endif %}
-            <div class="d-flex justify-content-center gap-3">
-                <button type="submit" class="btn btn-danger btn-sm">Sign Out</button>
-                <a href="{% url 'home' %}" class="btn btn-outline-secondary btn-sm">Cancel</a>
-            </div>
+            <button type="submit" class="btn-signout">
+                <i class="fas fa-sign-out-alt"></i> Yes, Sign Me Out
+            </button>
         </form>
+
+        <a href="{% url 'home' %}" class="btn-cancel">
+            <i class="fas fa-arrow-left"></i> Go Back
+        </a>
+
+        <p class="auth-footer">© {% now "Y" %} Student Resource Portal &mdash; Er. Sujan Karki</p>
     </div>
-</div>
-{% endblock %}
+
+</body>
+</html>

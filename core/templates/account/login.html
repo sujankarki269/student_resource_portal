@@ -1,22 +1,125 @@
-{% extends 'core/base.html' %}
+{% load static %}
 {% load socialaccount %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In | Student Resource Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #ede9fe 0%, #f0f4ff 50%, #f8f9fa 100%);
+            font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
 
-{% block title %}Sign In{% endblock %}
+        .auth-card {
+            background: #fff;
+            border: 1px solid rgba(102,126,234,0.15);
+            border-radius: 1.4rem;
+            padding: 2.8rem 2.2rem 2.2rem;
+            width: 100%;
+            max-width: 380px;
+            box-shadow: 0 8px 40px rgba(102,126,234,0.13);
+            text-align: center;
+            animation: fadeUp .35s ease-out both;
+        }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
 
-{% block content %}
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow-lg border-0 rounded-4">
-                <div class="card-body p-4 text-center">
-                    <h2 class="fw-bold mb-3">Welcome!!!</h2>
-                    <p class="text-muted mb-4">Sign in with your Google account to access resources</p>
-                    <a href="{% provider_login_url 'google' %}" class="btn btn-danger btn-lg w-100">
-                        <i class="fab fa-google me-2"></i>Login with Google
-                    </a>
-                </div>
-            </div>
-        </div>
+        .auth-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            color: #fff;
+            margin: 0 auto 1.3rem;
+            box-shadow: 0 10px 24px rgba(102,126,234,0.35);
+        }
+
+        .auth-card h1 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: .25rem;
+        }
+
+        .auth-card .subtitle {
+            font-size: .83rem;
+            color: #9ca3af;
+            margin-bottom: 2rem;
+            letter-spacing: .01em;
+        }
+
+        .divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, #e5e7eb, transparent);
+            margin-bottom: 1.6rem;
+        }
+
+        .btn-google {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: .75rem;
+            width: 100%;
+            padding: .82rem 1.2rem;
+            background: #fff;
+            border: 1.5px solid #d1d5db;
+            border-radius: 1rem;
+            font-size: .92rem;
+            font-weight: 600;
+            color: #374151;
+            text-decoration: none;
+            transition: border-color .2s, box-shadow .2s, transform .15s;
+        }
+        .btn-google:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 18px rgba(102,126,234,0.18);
+            color: #1a1a2e;
+            transform: translateY(-1px);
+        }
+        .btn-google img { width: 20px; height: 20px; flex-shrink: 0; }
+
+        .auth-footer {
+            margin-top: 1.6rem;
+            font-size: .72rem;
+            color: #c4c9d4;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="auth-card">
+        <div class="auth-icon"><i class="fas fa-graduation-cap"></i></div>
+        <h1>Student Resource Portal</h1>
+        <p class="subtitle">Er. Sujan Karki</p>
+
+        <div class="divider"></div>
+
+        <a href="{% provider_login_url 'google' %}" class="btn-google">
+            <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google">
+            Continue with Google
+        </a>
+
+        <p class="auth-footer">
+            Sign in with your Google account.<br>
+            © {% now "Y" %} Student Resource Portal
+        </p>
     </div>
-</div>
-{% endblock %}
+
+</body>
+</html>
