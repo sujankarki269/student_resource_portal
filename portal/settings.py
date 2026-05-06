@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -222,5 +223,85 @@ CKEDITOR_5_CONFIGS = {
         'height': 500,
         'width': '100%',
         'removePlugins': ['Markdown'],  # if you don't want markdown support
+    },
+}
+
+# ===== JAZZMIN ADMIN THEME =====
+JAZZMIN_SETTINGS = {
+    "site_title": "SRP Admin",
+    "site_header": "Student Resource Portal",
+    "site_brand": "SRP",
+    "welcome_sign": "IOE Purwanchal Campus — Admin Panel",
+    "copyright": "IOE Purwanchal Campus",
+    "search_model": ["core.Note", "core.Assignment", "core.Program", "core.BlogPost"],
+    "topmenu_links": [
+        {"name": "Dashboard", "url": "admin:index", "permissions": ["auth.view_user"]},
+        {"name": "View Site",  "url": "/", "new_window": True},
+    ],
+    "usermenu_links": [
+        {"name": "View Site", "url": "/", "new_window": True},
+    ],
+    "show_sidebar": True,
+    "navigation_expanded": True,
+    "order_with_respect_to": [
+        "core", "auth",
+        "core.note", "core.assignment", "core.program",
+        "core.subject", "core.tag",
+        "core.category", "core.blogpost",
+        "core.announcement",
+        "core.bookmark", "core.tutorialprogress",
+        "core.publicationcategory", "core.publicationitem",
+        "core.portfolioprofile",
+    ],
+    "icons": {
+        "auth":                     "fas fa-users-cog",
+        "auth.user":                "fas fa-user",
+        "auth.Group":               "fas fa-users",
+        "core.Note":                "fas fa-book-open",
+        "core.Assignment":          "fas fa-clipboard-list",
+        "core.Program":             "fas fa-code",
+        "core.Subject":             "fas fa-graduation-cap",
+        "core.Tag":                 "fas fa-tag",
+        "core.Category":            "fas fa-folder",
+        "core.BlogPost":            "fas fa-file-alt",
+        "core.Announcement":        "fas fa-bullhorn",
+        "core.Bookmark":            "fas fa-bookmark",
+        "core.TutorialProgress":    "fas fa-tasks",
+        "core.Profile":             "fas fa-id-card",
+        "core.PortfolioProfile":    "fas fa-user-tie",
+        "core.PublicationCategory": "fas fa-folder-open",
+        "core.PublicationItem":     "fas fa-newspaper",
+    },
+    "default_icon_parents": "fas fa-chevron-circle-right",
+    "default_icon_children": "fas fa-circle",
+    "related_modal_active": True,
+    "use_google_fonts_cdn": False,
+    "show_ui_builder": False,
+    "changeform_format": "horizontal_tabs",
+}
+
+JAZZMIN_UI_TWEAKS = {
+    "navbar_small_text": False,
+    "footer_small_text": True,
+    "body_small_text": False,
+    "brand_colour": "navbar-primary",
+    "accent": "accent-primary",
+    "navbar": "navbar-dark",
+    "navbar_fixed": True,
+    "layout_boxed": False,
+    "footer_fixed": False,
+    "sidebar_fixed": True,
+    "sidebar": "sidebar-dark-primary",
+    "sidebar_nav_child_indent": True,
+    "sidebar_nav_compact_style": True,
+    "sidebar_nav_flat_style": False,
+    "theme": "default",
+    "button_classes": {
+        "primary":   "btn-primary",
+        "secondary": "btn-secondary",
+        "info":      "btn-outline-info",
+        "warning":   "btn-warning",
+        "danger":    "btn-danger",
+        "success":   "btn-success",
     },
 }
