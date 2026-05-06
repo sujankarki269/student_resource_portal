@@ -1,46 +1,81 @@
 {% extends 'core/base.html' %}
 {% load static %}
 
-{% block title %}Publications{% endblock %}
+{% block title %}Publications | Student Portal{% endblock %}
 
 {% block content %}
-<div class="container py-5">
-    <h1 class="mb-5 text-center">Publications & Research</h1>
+<div class="container-fluid px-0">
+    <div class="d-flex align-items-center justify-content-between mb-5">
+        <div>
+            <h1 class="fw-bold mb-1"><i class="fas fa-file-alt text-secondary me-2"></i>Publications & Research</h1>
+            <p class="text-muted mb-0">Academic papers, journals, and research work</p>
+        </div>
+    </div>
 
     {% for category in categories %}
-        <section class="mb-5">
-            <h2 class="border-bottom pb-2">{{ category.name }}</h2>
-            {% if category.description %}
-                <p class="lead">{{ category.description }}</p>
-            {% endif %}
+    <section class="mb-5">
+        <div class="d-flex align-items-center mb-3 pb-2 border-bottom">
+            <h2 class="fw-semibold mb-0 me-3">{{ category.name }}</h2>
+            <span class="badge bg-secondary rounded-pill">{{ category.publications.count }}</span>
+        </div>
+        {% if category.description %}
+        <p class="text-muted mb-4">{{ category.description }}</p>
+        {% endif %}
 
-            <div class="row">
-                {% for pub in category.publications.all %}
-                <div class="col-md-6 mb-4 d-flex">
-                    <div class="card h-100 w-100 shadow-sm">
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title">{{ pub.title }}</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">{{ pub.authors }}</h6>
-                            <p class="text-muted">{{ pub.date|date:"F Y" }}</p>
-                            <p class="card-text flex-grow-1">{{ pub.description|truncatechars:300 }}</p>
-                            <div class="mt-auto">
+        <div class="row g-4">
+            {% for pub in category.publications.all %}
+            <div class="col-md-6 d-flex">
+                <div class="card h-100 w-100 border-0 shadow-sm rounded-4 pub-card hover-scale">
+                    <div class="card-body d-flex flex-column p-4">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <span class="badge bg-info-subtle text-info rounded-pill small">{{ pub.date|date:"Y" }}</span>
+                            <div class="d-flex gap-2">
                                 {% if pub.link %}
-                                    <a href="{{ pub.link }}" target="_blank" class="btn btn-sm btn-outline-primary me-2">View Online</a>
+                                <a href="{{ pub.link }}" target="_blank" class="btn btn-sm btn-outline-primary rounded-pill" title="View Online">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
                                 {% endif %}
                                 {% if pub.file %}
-                                    <a href="{{ pub.file.url }}" class="btn btn-sm btn-outline-success">Download PDF</a>
+                                <a href="{{ pub.file.url }}" class="btn btn-sm btn-outline-success rounded-pill" title="Download PDF">
+                                    <i class="fas fa-file-pdf"></i>
+                                </a>
                                 {% endif %}
                             </div>
                         </div>
+                        <h5 class="card-title fw-semibold lh-base">{{ pub.title }}</h5>
+                        {% if pub.authors %}
+                        <p class="text-muted small mb-1"><i class="fas fa-users me-1"></i>{{ pub.authors }}</p>
+                        {% endif %}
+                        {% if pub.description %}
+                        <p class="card-text text-muted small flex-grow-1 mt-2">{{ pub.description|truncatechars:250 }}</p>
+                        {% endif %}
+                        <div class="mt-auto pt-3 d-flex gap-2 flex-wrap">
+                            {% if pub.link %}
+                            <a href="{{ pub.link }}" target="_blank" class="btn btn-sm btn-outline-primary rounded-pill">
+                                <i class="fas fa-external-link-alt me-1"></i>View Online
+                            </a>
+                            {% endif %}
+                            {% if pub.file %}
+                            <a href="{{ pub.file.url }}" class="btn btn-sm btn-outline-success rounded-pill">
+                                <i class="fas fa-download me-1"></i>Download PDF
+                            </a>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
-                {% empty %}
-                <p class="text-muted">No publications in this category yet.</p>
-                {% endfor %}
             </div>
-        </section>
+            {% empty %}
+            <div class="col-12">
+                <p class="text-muted fst-italic">No publications in this category yet.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
     {% empty %}
-        <p class="text-center">No publication categories available.</p>
+    <div class="text-center py-5">
+        <i class="fas fa-file-alt fa-3x text-muted mb-3"></i>
+        <p class="text-muted fs-5">No publication categories available.</p>
+    </div>
     {% endfor %}
 </div>
 {% endblock %}

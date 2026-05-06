@@ -14,14 +14,20 @@ from .forms import UserUpdateForm, ProfileUpdateForm
 def home(request):
     latest_notes = Note.objects.all().order_by('-upload_date')[:6]
     featured_subjects = Subject.objects.annotate(num_notes=Count('note')).filter(num_notes__gt=0)[:4]
-    recent_updates = list(Note.objects.all().order_by('-upload_date')[:3]) + \
-                    list(Assignment.objects.all().order_by('-upload_date')[:3])
+    recent_updates = [{'item': n, 'type': 'Note'} for n in Note.objects.all().order_by('-upload_date')[:3]] + \
+                    [{'item': a, 'type': 'Assignment'} for a in Assignment.objects.all().order_by('-upload_date')[:3]]
     announcements = Announcement.objects.filter(is_active=True).order_by('-date')[:3]
     context = {
         'latest_notes': latest_notes,
         'featured_subjects': featured_subjects,
         'recent_updates': recent_updates[:6],
         'announcements': announcements,
+        'stats': {
+            'notes': Note.objects.count(),
+            'assignments': Assignment.objects.count(),
+            'programs': Program.objects.count(),
+            'subjects': Subject.objects.count(),
+        },
     }
     return render(request, 'core/home.html', context)
 
@@ -69,7 +75,7 @@ def assignments_list(request):
 
 @login_required
 def programs_list(request):
-    subjects = Subject.objects.all()  # optionally annotate with program count
+    subjects = Subject.objects.all()
     selected_subject = request.GET.get('subject')
     query = request.GET.get('q')
     programs = Program.objects.all().order_by('-upload_date')
@@ -91,32 +97,6 @@ def programs_list(request):
         'query': query,
     }
     return render(request, 'core/programs.html', context)
-
-
-@login_required
-def tutorials_list(request):
-    categories = Category.objects.all()
-    selected_category = request.GET.get('category')
-    query = request.GET.get('q')
-    tutorials = Tutorial.objects.all().order_by('-upload_date')
-    if selected_category:
-        tutorials = tutorials.filter(category_id=selected_category)
-    if query:
-        tutorials = tutorials.filter(Q(title__icontains=query) | Q(content__icontains=query))
-    paginator = Paginator(tutorials, 9)
-    page = request.GET.get('page')
-    tutorials_page = paginator.get_page(page)
-    context = {
-        'categories': categories,
-        'tutorials': tutorials_page,
-        'selected_category': int(selected_category) if selected_category else None,
-        'query': query,
-    }
-    return render(request, 'core/tutorials.html', context)
-
-@login_required
-def profile(request):
-    return render(request, 'core/profile.html')
 
 @login_required
 def download_file(request, model, pk):
@@ -167,7 +147,6 @@ def portfolio(request):
             surname='Karki',
             email='sujan@ioepc.edu.np'
         )
-    print("Profile found:", profile)
     return render(request, 'core/portfolio.html', {'profile': profile})
 
 @login_required

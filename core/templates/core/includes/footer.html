@@ -1,33 +1,38 @@
-<footer style="position: relative; z-index: 2; background: rgba(255, 255, 255, 0.5);" class="text-center text-lg-start mt-5">
-    <div class="container p-4">
-        <div class="row">
-            <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
-                <h5 class="text-uppercase">Student Resource Portal</h5>
-                <p>
-                    Your one-stop destination for notes, assignments, programs, and tutorials.
-                </p>
+<footer class="mt-5">
+    <div class="container py-5">
+        <div class="row g-4">
+            <div class="col-lg-5 col-md-6">
+                <h5 class="fw-bold mb-3"><i class="fas fa-graduation-cap me-2"></i>Student Resource Portal</h5>
+                <p class="mb-3" style="color:#adb5bd;">Your one-stop destination for notes, assignments, programs, and tutorials — built for students, by students.</p>
+                <div class="d-flex gap-3">
+                    <a href="#" class="btn btn-sm btn-outline-secondary rounded-circle" style="width:36px;height:36px;padding:0;line-height:34px;text-align:center;"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="btn btn-sm btn-outline-secondary rounded-circle" style="width:36px;height:36px;padding:0;line-height:34px;text-align:center;"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="btn btn-sm btn-outline-secondary rounded-circle" style="width:36px;height:36px;padding:0;line-height:34px;text-align:center;"><i class="fab fa-instagram"></i></a>
+                </div>
             </div>
-            <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                <h5 class="text-uppercase">Links</h5>
+            <div class="col-lg-3 col-md-3 col-6">
+                <h5 class="fw-semibold mb-3">Resources</h5>
                 <ul class="list-unstyled mb-0">
-                    <li><a href="{% url 'home' %}" class="text-dark">Home</a></li>
-                    <li><a href="{% url 'notes' %}" class="text-dark">Notes</a></li>
-                    <li><a href="{% url 'assignments' %}" class="text-dark">Assignments</a></li>
-                    <li><a href="{% url 'programs' %}" class="text-dark">Programs</a></li>
-                    <li><a href="{% url 'tutorials' %}" class="text-dark">Tutorials</a></li>
+                    <li class="mb-2"><a href="{% url 'home' %}"><i class="fas fa-home me-2 text-primary" style="width:16px;"></i>Home</a></li>
+                    <li class="mb-2"><a href="{% url 'notes' %}"><i class="fas fa-book-open me-2 text-primary" style="width:16px;"></i>Notes</a></li>
+                    <li class="mb-2"><a href="{% url 'assignments' %}"><i class="fas fa-clipboard-list me-2 text-warning" style="width:16px;"></i>Assignments</a></li>
+                    <li class="mb-2"><a href="{% url 'programs' %}"><i class="fas fa-code me-2 text-success" style="width:16px;"></i>Programs</a></li>
+                    <li class="mb-2"><a href="{% url 'tutorials' %}"><i class="fas fa-play-circle me-2 text-info" style="width:16px;"></i>Tutorials</a></li>
                 </ul>
             </div>
-            <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                <h5 class="text-uppercase">Follow Us</h5>
-                <ul class="list-unstyled">
-                    <li><a href="#" class="text-dark"><i class="fab fa-facebook"></i> Facebook</a></li>
-                    <li><a href="#" class="text-dark"><i class="fab fa-twitter"></i> Twitter</a></li>
-                    <li><a href="#" class="text-dark"><i class="fab fa-instagram"></i> Instagram</a></li>
+            <div class="col-lg-4 col-md-3 col-6">
+                <h5 class="fw-semibold mb-3">More</h5>
+                <ul class="list-unstyled mb-0">
+                    <li class="mb-2"><a href="{% url 'publications' %}"><i class="fas fa-file-alt me-2" style="width:16px;"></i>Publications</a></li>
+                    <li class="mb-2"><a href="{% url 'portfolio' %}"><i class="fas fa-user me-2" style="width:16px;"></i>Portfolio</a></li>
+                    <li class="mb-2"><a href="{% url 'profile' %}"><i class="fas fa-cog me-2" style="width:16px;"></i>Profile</a></li>
                 </ul>
             </div>
         </div>
     </div>
-    <div class="text-center p-3" style="background-color: rgba(255, 255, 255, 0.1);">
-        © 2026 Student Resource Portal. All rights reserved.
+    <div class="border-top py-3" style="border-color:rgba(255,255,255,0.08)!important;">
+        <div class="container text-center" style="color:#6c757d; font-size:0.875rem;">
+            &copy; {% now "Y" %} Student Resource Portal &mdash; IOE Purwanchal Campus &bull; All rights reserved.
+        </div>
     </div>
 </footer>

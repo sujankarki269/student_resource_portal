@@ -1,22 +1,26 @@
-/* ===== CUSTOM MOUSE CURSOR ===== */
-* {
-    cursor: url(https://files-cdn.cnblogs.com/files/miluluyo/cursora.ico), auto;
+/* ===== CSS VARIABLES ===== */
+:root {
+    --primary: #667eea;
+    --primary-dark: #764ba2;
+    --accent: #43e97b;
+    --text-muted: #6c757d;
+    --card-radius: 1.2rem;
+    --transition: all 0.3s ease;
 }
 
-/* ===== FONT & BASE TEXT COLOR ===== */
+/* ===== BASE STYLES ===== */
 * {
-    font-family: "Noto Sans SC", "Source Han Sans SC", "Microsoft YaHei", sans-serif;
-    font-weight: 100;
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+body {
+    color: #343a40;
+    background-color: #f8f9fa;
 }
 body, textarea, input, button, select, keygen, legend {
-    color: #7f8c93;
+    color: #343a40;
 }
-.form-control {
-    font-family: "Noto Sans SC", "Source Han Sans SC", "Microsoft YaHei", sans-serif;
-}
-
-.form-control::placeholder {
-    font-family: "Noto Sans SC", "Source Han Sans SC", "Microsoft YaHei", sans-serif;
+.form-control, .form-control::placeholder {
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
 }
 
 /* ===== LINK STYLES ===== */
@@ -499,3 +503,116 @@ p.has-text-align-center img {
 .category-tree .btn-link:hover {
     color: #0d6efd;
 }
+
+/* ===== STATS CARDS ===== */
+.stat-card {
+    background: white;
+    border: 1px solid rgba(0,0,0,0.06);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    transition: var(--transition);
+}
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 25px rgba(102,126,234,0.2);
+}
+.stat-number {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ===== QUICK ACCESS BUTTONS ===== */
+.quick-access-btn {
+    font-weight: 500;
+    transition: var(--transition);
+}
+.quick-access-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+/* ===== ASSIGNMENT CARD ===== */
+.assignment-card {
+    border-top: 3px solid #ffc107 !important;
+}
+.assignment-card:hover {
+    box-shadow: 0 12px 25px rgba(255,193,7,0.2) !important;
+    transform: translateY(-4px);
+}
+
+/* ===== TUTORIAL CATEGORY CARD ===== */
+.tutorial-category-card {
+    border-top: 3px solid #0dcaf0 !important;
+    cursor: pointer;
+}
+.tutorial-category-card:hover {
+    box-shadow: 0 12px 25px rgba(13,202,240,0.2) !important;
+}
+.tutorial-icon {
+    width: 48px;
+    height: 48px;
+    background: rgba(13,202,240,0.1);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ===== PUBLICATION CARD ===== */
+.pub-card {
+    border-top: 3px solid #6c757d !important;
+}
+.pub-card:hover {
+    box-shadow: 0 12px 25px rgba(108,117,125,0.2) !important;
+}
+
+/* ===== BACK TO TOP BUTTON ===== */
+.back-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 44px;
+    height: 44px;
+    z-index: 1000;
+    opacity: 0.85;
+    box-shadow: 0 4px 15px rgba(102,126,234,0.4);
+    transition: var(--transition);
+    padding: 0;
+    line-height: 1;
+}
+.back-to-top:hover {
+    opacity: 1;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(102,126,234,0.5);
+}
+
+/* ===== NAVBAR SCROLL SHADOW ===== */
+.navbar-scrolled {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1) !important;
+}
+
+/* ===== FOOTER IMPROVEMENTS ===== */
+footer {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%) !important;
+    color: #adb5bd !important;
+}
+footer h5 {
+    color: #fff;
+}
+footer a {
+    color: #adb5bd !important;
+    transition: color 0.2s;
+}
+footer a:hover {
+    color: #fff !important;
+}
+footer .text-dark {
+    color: #adb5bd !important;
+}
+
+/* ===== BADGE SOFT COLORS (Bootstrap 5.3 compat) ===== */
+.bg-primary-subtle { background-color: rgba(102,126,234,0.15) !important; }
+.bg-warning-subtle { background-color: rgba(255,193,7,0.15) !important; }
+.bg-info-subtle    { background-color: rgba(13,202,240,0.15) !important; }
+.text-warning-emphasis { color: #997404 !important; }
