@@ -109,6 +109,51 @@
     <script src="{% static 'core/js/search.js' %}"></script>
     <script src="{% static 'core/js/fish.js' %}"></script>
 
+    <script>
+    function getCsrfToken() {
+        return document.cookie.split('; ').find(r => r.startsWith('csrftoken='))?.split('=')[1];
+    }
+    function toggleBookmark(btn, model, pk) {
+        fetch('/bookmark/toggle/', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json', 'X-CSRFToken': getCsrfToken()},
+            body: JSON.stringify({model, pk}),
+        })
+        .then(r => r.json())
+        .then(data => {
+            const icon = btn.querySelector('i');
+            if (data.bookmarked) {
+                btn.classList.add('active');
+                btn.title = 'Remove bookmark';
+                icon.className = 'fas fa-bookmark';
+            } else {
+                btn.classList.remove('active');
+                btn.title = 'Add bookmark';
+                icon.className = 'far fa-bookmark';
+            }
+        });
+    }
+    function toggleProgress(btn, postId) {
+        fetch('/tutorial/progress/toggle/', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json', 'X-CSRFToken': getCsrfToken()},
+            body: JSON.stringify({post_id: postId}),
+        })
+        .then(r => r.json())
+        .then(data => {
+            const icon = btn.querySelector('i');
+            if (data.completed) {
+                btn.classList.add('completed');
+                icon.className = 'fas fa-check-circle me-1';
+                btn.childNodes[btn.childNodes.length - 1].textContent = 'Completed';
+            } else {
+                btn.classList.remove('completed');
+                icon.className = 'far fa-circle me-1';
+                btn.childNodes[btn.childNodes.length - 1].textContent = 'Mark as Complete';
+            }
+        });
+    }
+    </script>
     <style>
     #main-content {
         scroll-margin-top: 70px;

@@ -33,13 +33,13 @@
 
         <h5 class="fw-semibold mb-3 text-muted">
             <i class="fas fa-list me-2"></i>Chapters
-            <span class="badge bg-info-subtle text-info rounded-pill ms-2">{{ subcategories.count }}</span>
+            <span class="badge bg-info-subtle text-info rounded-pill ms-2">{{ subs_with_progress|length }}</span>
         </h5>
 
         <div class="row g-3">
-            {% for sub in subcategories %}
+            {% for item in subs_with_progress %}
             <div class="col-md-6 col-lg-4">
-                <a href="{% url 'category_detail' sub.slug %}" class="text-decoration-none">
+                <a href="{% url 'category_detail' item.sub.slug %}" class="text-decoration-none">
                     <div class="card border-0 shadow-sm rounded-4 h-100 chapter-card hover-scale">
                         <div class="card-body p-4">
                             <div class="chapter-num mb-2">
@@ -47,12 +47,27 @@
                                     Ch. {{ forloop.counter }}
                                 </span>
                             </div>
-                            <h6 class="fw-semibold text-dark mb-2">{{ sub.name }}</h6>
-                            {% if sub.description %}
-                            <p class="text-muted small mb-0">{{ sub.description|truncatechars:70 }}</p>
+                            <h6 class="fw-semibold text-dark mb-2">{{ item.sub.name }}</h6>
+                            {% if item.sub.description %}
+                            <p class="text-muted small mb-0">{{ item.sub.description|truncatechars:70 }}</p>
                             {% endif %}
                         </div>
                         <div class="card-footer bg-transparent border-0 pt-0 pb-3 px-4">
+                            {% if item.total > 0 %}
+                            <div class="mb-2">
+                                <div class="d-flex justify-content-between small mb-1">
+                                    <span class="text-muted" style="font-size:.72rem;">Progress</span>
+                                    <span class="{% if item.done == item.total %}text-success fw-semibold{% else %}text-muted{% endif %}" style="font-size:.72rem;">
+                                        {{ item.done }}/{{ item.total }}
+                                        {% if item.done == item.total %}<i class="fas fa-check-circle ms-1"></i>{% endif %}
+                                    </span>
+                                </div>
+                                <div class="progress chapter-progress-bar">
+                                    <div class="progress-bar {% if item.done == item.total %}bg-success{% else %}bg-primary{% endif %}"
+                                         style="width:{{ item.pct }}%"></div>
+                                </div>
+                            </div>
+                            {% endif %}
                             <span class="text-primary small fw-medium">Read &rarr;</span>
                         </div>
                     </div>

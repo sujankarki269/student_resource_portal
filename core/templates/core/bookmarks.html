@@ -1,0 +1,217 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}My Bookmarks | Student Portal{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+
+        <!-- Header -->
+        <div class="d-flex align-items-center gap-3 mb-4">
+            <div class="rounded-3 p-3 flex-shrink-0" style="background:rgba(102,126,234,0.12);">
+                <i class="fas fa-bookmark fa-2x" style="color:#667eea;"></i>
+            </div>
+            <div>
+                <h2 class="fw-bold mb-0">My Bookmarks</h2>
+                <p class="text-muted mb-0 small">{{ total }} saved item{{ total|pluralize }}</p>
+            </div>
+        </div>
+
+        {% if total == 0 %}
+        <div class="text-center py-5">
+            <i class="far fa-bookmark fa-4x text-muted mb-3 opacity-25"></i>
+            <p class="fs-5 text-muted">No bookmarks yet.</p>
+            <p class="text-muted small">Click the <i class="fas fa-bookmark text-primary"></i> icon on any note, assignment, or program to save it here.</p>
+            <a href="{% url 'notes' %}" class="btn btn-primary rounded-pill px-4 mt-2">Browse Notes</a>
+        </div>
+        {% else %}
+
+        <!-- Tabs -->
+        <ul class="nav nav-pills mb-4 gap-1" id="bookmarkTabs">
+            <li class="nav-item">
+                <button class="nav-link active rounded-pill px-4" data-bs-toggle="pill" data-bs-target="#tab-notes">
+                    <i class="fas fa-book-open me-1"></i>Notes
+                    {% if notes_bm %}<span class="badge bg-white text-primary ms-1">{{ notes_bm|length }}</span>{% endif %}
+                </button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link rounded-pill px-4" data-bs-toggle="pill" data-bs-target="#tab-assignments">
+                    <i class="fas fa-clipboard-list me-1"></i>Assignments
+                    {% if assignments_bm %}<span class="badge bg-white text-primary ms-1">{{ assignments_bm|length }}</span>{% endif %}
+                </button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link rounded-pill px-4" data-bs-toggle="pill" data-bs-target="#tab-programs">
+                    <i class="fas fa-code me-1"></i>Programs
+                    {% if programs_bm %}<span class="badge bg-white text-primary ms-1">{{ programs_bm|length }}</span>{% endif %}
+                </button>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <!-- Notes tab -->
+            <div class="tab-pane fade show active" id="tab-notes">
+                {% if notes_bm %}
+                <div class="row g-4">
+                    {% for bm in notes_bm %}
+                    <div class="col-md-4 col-sm-6 d-flex">
+                        <div class="card h-100 w-100 border-0 shadow-sm note-list-card rounded-4" id="bm-note-{{ bm.note.id }}">
+                            <div class="card-body d-flex flex-column">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="badge bg-primary-subtle text-primary rounded-pill small">{{ bm.note.subject.name }}</span>
+                                    <small class="text-muted">{{ bm.note.upload_date|date:"M d, Y" }}</small>
+                                </div>
+                                <h5 class="card-title fw-semibold">{{ bm.note.title }}</h5>
+                                <p class="card-text text-muted small flex-grow-1">{{ bm.note.description|truncatechars:80 }}</p>
+                                <div class="d-flex align-items-center gap-2 mt-auto pt-2 border-top">
+                                    <small class="text-muted me-auto"><i class="fas fa-bookmark text-primary me-1"></i>{{ bm.created_at|date:"M d" }}</small>
+                                    <button class="btn-bookmark active"
+                                            onclick="removeBookmark(this,'note',{{ bm.note.id }},'bm-note-{{ bm.note.id }}')"
+                                            title="Remove bookmark">
+                                        <i class="fas fa-bookmark"></i>
+                                    </button>
+                                    <a href="{% url 'download' 'note' bm.note.id %}" class="btn btn-sm btn-success rounded-pill">
+                                        <i class="fas fa-download"></i>
+                                    </a>
+                                    {% if bm.note.file.name|lower|slice:"-4:" == ".pdf" %}
+                                    <a href="{% url 'pdf_preview' 'note' bm.note.id %}" target="_blank"
+                                       class="btn btn-sm btn-outline-primary rounded-pill">
+                                        <i class="fas fa-eye me-1"></i>Preview
+                                    </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center py-5 text-muted">
+                    <i class="fas fa-book-open fa-3x mb-3 opacity-25"></i>
+                    <p>No bookmarked notes yet.</p>
+                    <a href="{% url 'notes' %}" class="btn btn-outline-primary btn-sm rounded-pill">Browse Notes</a>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Assignments tab -->
+            <div class="tab-pane fade" id="tab-assignments">
+                {% if assignments_bm %}
+                <div class="row g-4">
+                    {% for bm in assignments_bm %}
+                    <div class="col-md-4 col-sm-6 d-flex">
+                        <div class="card h-100 w-100 border-0 shadow-sm rounded-4 assignment-card" id="bm-assignment-{{ bm.assignment.id }}">
+                            <div class="card-body d-flex flex-column">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="badge bg-warning-subtle text-warning-emphasis rounded-pill small">{{ bm.assignment.subject.name }}</span>
+                                    <span class="badge {% if bm.assignment.status == 'graded' %}bg-success{% elif bm.assignment.status == 'submitted' %}bg-info{% else %}bg-secondary{% endif %} rounded-pill">
+                                        {{ bm.assignment.get_status_display }}
+                                    </span>
+                                </div>
+                                <h5 class="card-title fw-semibold">{{ bm.assignment.title }}</h5>
+                                <p class="card-text text-muted small flex-grow-1">{{ bm.assignment.description|truncatechars:80 }}</p>
+                                <div class="mb-2">
+                                    <small class="text-danger fw-semibold"><i class="fas fa-calendar-alt me-1"></i>Due: {{ bm.assignment.due_date|date:"M d, Y" }}</small>
+                                </div>
+                                <div class="d-flex align-items-center gap-2 mt-auto pt-2 border-top">
+                                    <small class="text-muted me-auto"><i class="fas fa-bookmark text-primary me-1"></i>{{ bm.created_at|date:"M d" }}</small>
+                                    <button class="btn-bookmark active"
+                                            onclick="removeBookmark(this,'assignment',{{ bm.assignment.id }},'bm-assignment-{{ bm.assignment.id }}')"
+                                            title="Remove bookmark">
+                                        <i class="fas fa-bookmark"></i>
+                                    </button>
+                                    {% if bm.assignment.file %}
+                                    <a href="{% url 'download' 'assignment' bm.assignment.id %}" class="btn btn-sm btn-success rounded-pill">
+                                        <i class="fas fa-download"></i> Download
+                                    </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center py-5 text-muted">
+                    <i class="fas fa-clipboard-list fa-3x mb-3 opacity-25"></i>
+                    <p>No bookmarked assignments yet.</p>
+                    <a href="{% url 'assignments' %}" class="btn btn-outline-warning btn-sm rounded-pill">Browse Assignments</a>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Programs tab -->
+            <div class="tab-pane fade" id="tab-programs">
+                {% if programs_bm %}
+                <div class="row g-4">
+                    {% for bm in programs_bm %}
+                    <div class="col-md-6 d-flex">
+                        <div class="card h-100 w-100 border-0 shadow-sm rounded-4 program-card-new" id="bm-program-{{ bm.program.id }}">
+                            <div class="card-body d-flex flex-column p-4">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h5 class="card-title fw-semibold mb-0 me-2">{{ bm.program.title }}</h5>
+                                    <span class="lang-badge lang-{{ bm.program.language|lower }} flex-shrink-0">{{ bm.program.language|upper }}</span>
+                                </div>
+                                {% if bm.program.subject %}
+                                <span class="badge bg-success-subtle text-success rounded-pill mb-2" style="width:fit-content;">{{ bm.program.subject.name }}</span>
+                                {% endif %}
+                                {% if bm.program.description %}
+                                <p class="card-text text-muted small mb-2">{{ bm.program.description|truncatechars:80 }}</p>
+                                {% endif %}
+                                <div class="d-flex align-items-center gap-2 mt-auto pt-2 border-top">
+                                    <small class="text-muted me-auto"><i class="fas fa-bookmark text-primary me-1"></i>{{ bm.created_at|date:"M d" }}</small>
+                                    <button class="btn-bookmark active"
+                                            onclick="removeBookmark(this,'program',{{ bm.program.id }},'bm-program-{{ bm.program.id }}')"
+                                            title="Remove bookmark">
+                                        <i class="fas fa-bookmark"></i>
+                                    </button>
+                                    {% if bm.program.file %}
+                                    <a href="{% url 'download' 'program' bm.program.id %}" class="btn btn-sm btn-success rounded-pill">
+                                        <i class="fas fa-download"></i> Download
+                                    </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center py-5 text-muted">
+                    <i class="fas fa-code fa-3x mb-3 opacity-25"></i>
+                    <p>No bookmarked programs yet.</p>
+                    <a href="{% url 'programs' %}" class="btn btn-outline-success btn-sm rounded-pill">Browse Programs</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+function getCsrfToken() {
+    return document.cookie.split('; ').find(r => r.startsWith('csrftoken='))?.split('=')[1];
+}
+function removeBookmark(btn, model, pk, cardId) {
+    fetch("{% url 'toggle_bookmark' %}", {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json', 'X-CSRFToken': getCsrfToken()},
+        body: JSON.stringify({model, pk}),
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (!data.bookmarked) {
+            const card = document.getElementById(cardId);
+            if (card) {
+                card.style.transition = 'opacity .3s, transform .3s';
+                card.style.opacity = '0';
+                card.style.transform = 'scale(.95)';
+                setTimeout(() => card.closest('.col-md-4, .col-md-6, .col-sm-6')?.remove(), 300);
+            }
+        }
+    });
+}
+</script>
+{% endblock %}

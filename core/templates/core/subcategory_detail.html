@@ -27,7 +27,15 @@
         {% if display_post %}
         <article class="tutorial-article">
             <header class="mb-4 pb-3 border-bottom">
-                <h1 class="fw-bold">{{ display_post.title }}</h1>
+                <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap">
+                    <h1 class="fw-bold mb-0">{{ display_post.title }}</h1>
+                    <button id="progressBtn"
+                            class="btn btn-sm rounded-pill btn-mark-complete flex-shrink-0 {% if post_completed %}completed{% endif %}"
+                            onclick="toggleProgress(this, {{ display_post.id }})">
+                        <i class="{% if post_completed %}fas fa-check-circle{% else %}far fa-circle{% endif %} me-1"></i>
+                        {% if post_completed %}Completed{% else %}Mark as Complete{% endif %}
+                    </button>
+                </div>
                 <div class="d-flex align-items-center gap-3 text-muted small mt-2">
                     <span><i class="fas fa-calendar me-1"></i>{{ display_post.created_date|date:"F j, Y" }}</span>
                     <span><i class="fas fa-eye me-1"></i>{{ display_post.views }} views</span>

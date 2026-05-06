@@ -72,6 +72,11 @@
 
                         <div class="d-flex align-items-center gap-2 mt-auto">
                             <small class="text-muted me-auto"><i class="fas fa-download me-1 text-success"></i>{{ program.downloads }}</small>
+                            <button class="btn-bookmark {% if program.id in bookmarked_ids %}active{% endif %}"
+                                    onclick="toggleBookmark(this,'program',{{ program.id }})"
+                                    title="{% if program.id in bookmarked_ids %}Remove bookmark{% else %}Add bookmark{% endif %}">
+                                <i class="{% if program.id in bookmarked_ids %}fas{% else %}far{% endif %} fa-bookmark"></i>
+                            </button>
                             <button class="btn btn-sm btn-outline-secondary rounded-pill"
                                     data-bs-toggle="modal" data-bs-target="#codeModal{{ program.id }}">
                                 <i class="fas fa-expand-alt me-1"></i>Full Code

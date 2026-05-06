@@ -554,3 +554,141 @@ body.dark-mode,
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
+
+/* ===== BOOKMARK + PROGRESS dark mode ===== */
+.dark-mode .btn-bookmark { color: #555; }
+.dark-mode .btn-bookmark:hover,
+.dark-mode .btn-bookmark.active { color: #7b9fef; }
+.dark-mode .btn-mark-complete {
+    border-color: #7b9fef;
+    color: #7b9fef;
+}
+.dark-mode .btn-mark-complete:hover { background: rgba(123,159,239,.15); }
+.dark-mode .btn-mark-complete.completed {
+    background: #198754;
+    border-color: #198754;
+    color: #fff;
+}
+.dark-mode .chapter-progress-bar { background: rgba(255,255,255,.1); }
+
+/* ===== COMPREHENSIVE TEXT UTILITY OVERRIDES ===== */
+.dark-mode .text-secondary { color: #8899aa !important; }
+.dark-mode .text-muted     { color: #8899aa !important; }
+.dark-mode .text-dark      { color: #e0e0e0 !important; }
+.dark-mode .text-primary   { color: #7b9fef !important; }
+.dark-mode .text-success   { color: #4cbb7f !important; }
+.dark-mode .text-info      { color: #45d4e8 !important; }
+.dark-mode .text-warning   { color: #ffd555 !important; }
+.dark-mode .text-danger    { color: #f07878 !important; }
+.dark-mode small           { color: #8899aa; }
+
+/* ===== BADGE FIXES ===== */
+.dark-mode .badge.bg-light         { background-color: #3a3f4a !important; }
+.dark-mode .badge.text-secondary   { color: #aab0bb !important; }
+.dark-mode .badge.text-dark        { color: #e0e0e0 !important; }
+.dark-mode .badge.text-primary     { color: #7b9fef !important; }
+.dark-mode .badge.text-success     { color: #4cbb7f !important; }
+.dark-mode .badge.text-info        { color: #45d4e8 !important; }
+.dark-mode .bg-success-subtle      { background-color: rgba(76,187,127,0.15) !important; }
+
+/* ===== CARDS WITH HARDCODED WHITE BACKGROUNDS ===== */
+.dark-mode .card.subject-card {
+    background: linear-gradient(145deg, #2c2f36, #25282f) !important;
+}
+.dark-mode .card.subject-card .card-title { color: #7b9fef !important; }
+.dark-mode .card.subject-card .card-text  { color: #b0c4d9 !important; }
+.dark-mode .card.note-card { background: #2c2f36 !important; }
+.dark-mode .card.note-card .card-title { color: #f0f0f0; }
+
+/* ===== STAT CARDS ===== */
+.dark-mode .stat-card { background: #2c2f36; border-color: #3a3f4a; }
+.dark-mode .stat-number {
+    background: linear-gradient(135deg, #7b9fef, #9b7fd4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ===== QUICK ACCESS BUTTONS ===== */
+.dark-mode .btn-outline-primary  { border-color: #7b9fef !important; color: #7b9fef !important; }
+.dark-mode .btn-outline-warning  { border-color: #ffd555 !important; color: #ffd555 !important; }
+.dark-mode .btn-outline-success  { border-color: #4cbb7f !important; color: #4cbb7f !important; }
+.dark-mode .btn-outline-info     { border-color: #45d4e8 !important; color: #45d4e8 !important; }
+.dark-mode .btn-outline-secondary{ border-color: #6a7585 !important; color: #b0c4d9 !important; }
+.dark-mode .btn-outline-primary:hover  { background: rgba(123,159,239,.2) !important; color: #a0bfff !important; }
+.dark-mode .btn-outline-warning:hover  { background: rgba(255,213,85,.15) !important; color: #ffe080 !important; }
+.dark-mode .btn-outline-success:hover  { background: rgba(76,187,127,.15) !important; color: #7de8a8 !important; }
+.dark-mode .btn-outline-info:hover     { background: rgba(69,212,232,.15) !important; color: #80eaf5 !important; }
+.dark-mode .btn-outline-secondary:hover{ background: rgba(180,190,210,.12) !important; color: #d0dcea !important; }
+
+/* ===== CATEGORY TREE (sidebar links — hardcoded color:#444) ===== */
+.dark-mode .category-tree a          { color: #c8d6e5; }
+.dark-mode .category-tree a:hover    { background: rgba(102,126,234,0.12); color: #7b9fef; }
+.dark-mode .category-tree a.active   { color: #7b9fef; }
+.dark-mode .category-tree .btn-link  { color: #7788aa; }
+.dark-mode .category-tree .btn-link:hover { color: #7b9fef; }
+
+/* ===== BORDER DIVIDERS ===== */
+.dark-mode .border-top    { border-top-color:    #3a3f4a !important; }
+.dark-mode .border-bottom { border-bottom-color: #3a3f4a !important; }
+.dark-mode hr             { border-color: #3a3f4a; }
+.dark-mode .dropdown-divider { border-color: #3a3f4a; }
+
+/* ===== LIST GROUP ITEMS (recent updates, bookmarks) ===== */
+.dark-mode .list-group-item-action {
+    background: #2c2f36;
+    color: #e0e0e0;
+    border-color: #3a3f4a;
+}
+.dark-mode .list-group-item-action:hover,
+.dark-mode .list-group-item-action:focus {
+    background: #353a44;
+    color: #f0f0f0;
+}
+.dark-mode .list-group-item-action .fw-bold { color: #f0f0f0; }
+
+/* ===== MOBILE NAVBAR COLLAPSE ===== */
+@media (max-width: 991.98px) {
+    .dark-mode .navbar .navbar-collapse {
+        background: rgba(18, 20, 30, 0.97) !important;
+        border: 1px solid rgba(255,255,255,0.07);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    }
+}
+
+/* ===== NAV PILLS (bookmarks tabs) ===== */
+.dark-mode .nav-pills .nav-link             { color: #b0c4d9; }
+.dark-mode .nav-pills .nav-link:hover       { background: rgba(102,126,234,0.15); color: #fff; }
+.dark-mode .nav-pills .nav-link.active      { background: #3a5c8a; color: #fff; }
+.dark-mode .nav-pills .nav-link .badge.bg-white { background: rgba(255,255,255,0.15) !important; color: #7b9fef !important; }
+
+/* ===== ANNOUNCEMENT CAROUSEL ===== */
+.dark-mode .alert-warning {
+    background-color: #3a2e14 !important;
+    border-color: #6b5120 !important;
+    color: #ffe0a0 !important;
+}
+.dark-mode .alert-warning strong { color: #ffd555; }
+
+/* ===== INPUT GROUP TEXT ===== */
+.dark-mode .input-group-text {
+    background-color: #2c2f36;
+    border-color: #3a3f4a;
+    color: #8899aa;
+}
+
+/* ===== SCROLLBAR ===== */
+.dark-mode ::-webkit-scrollbar { width: 8px; height: 8px; }
+.dark-mode ::-webkit-scrollbar-track { background: #1a1e24; }
+.dark-mode ::-webkit-scrollbar-thumb { background: #3a3f4a; border-radius: 4px; }
+.dark-mode ::-webkit-scrollbar-thumb:hover { background: #4a5060; }
+
+/* ===== PROFILE PAGE ===== */
+.dark-mode .profile-card { background: #2c2f36; border-color: #3a3f4a; }
+
+/* ===== PUBLICATIONS PAGE ===== */
+.dark-mode .pub-card { background: #2c2f36; border-color: #3a3f4a; }
+.dark-mode .pub-card .card-title { color: #f0f0f0; }
+
+/* ===== FW-BOLD / FW-SEMIBOLD inside dark cards ===== */
+.dark-mode .fw-bold, .dark-mode .fw-semibold { color: inherit; }

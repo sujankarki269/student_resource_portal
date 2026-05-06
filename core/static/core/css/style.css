@@ -843,4 +843,50 @@ footer .text-dark {
 .bg-primary-subtle { background-color: rgba(102,126,234,0.15) !important; }
 .bg-warning-subtle { background-color: rgba(255,193,7,0.15) !important; }
 .bg-info-subtle    { background-color: rgba(13,202,240,0.15) !important; }
+
+/* ===== BOOKMARK BUTTON ===== */
+.btn-bookmark {
+    background: none;
+    border: none;
+    padding: 4px 6px;
+    font-size: 1rem;
+    color: #bbb;
+    cursor: pointer;
+    transition: color .2s, transform .15s;
+    line-height: 1;
+}
+.btn-bookmark:hover { color: #667eea; transform: scale(1.2); }
+.btn-bookmark.active { color: #667eea; }
+.btn-bookmark.active:hover { color: #e74c3c; }
+
+/* ===== MARK AS COMPLETE BUTTON ===== */
+.btn-mark-complete {
+    border: 2px solid #667eea;
+    color: #667eea;
+    background: transparent;
+    font-size: .8rem;
+    transition: all .2s;
+}
+.btn-mark-complete:hover {
+    background: rgba(102,126,234,.1);
+    color: #667eea;
+    border-color: #667eea;
+}
+.btn-mark-complete.completed {
+    background: #198754;
+    border-color: #198754;
+    color: #fff;
+}
+.btn-mark-complete.completed:hover {
+    background: #145c38;
+    border-color: #145c38;
+    color: #fff;
+}
+
+/* ===== CHAPTER PROGRESS BAR ===== */
+.chapter-progress-bar {
+    height: 5px;
+    border-radius: 3px;
+    background: rgba(0,0,0,.08);
+}
 .text-warning-emphasis { color: #997404 !important; }

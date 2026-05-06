@@ -43,9 +43,17 @@
                 <a href="{% url 'category_detail' post.category.slug %}" class="btn btn-outline-primary rounded-pill btn-sm">
                     <i class="fas fa-arrow-left me-1"></i>Back to {{ post.category.name }}
                 </a>
-                <a href="{% url 'tutorials' %}" class="btn btn-outline-secondary rounded-pill btn-sm">
-                    <i class="fas fa-th me-1"></i>All Tutorials
-                </a>
+                <div class="d-flex gap-2 align-items-center">
+                    <button id="progressBtn"
+                            class="btn btn-sm rounded-pill btn-mark-complete {% if post_completed %}completed{% endif %}"
+                            onclick="toggleProgress(this, {{ post.id }})">
+                        <i class="{% if post_completed %}fas fa-check-circle{% else %}far fa-circle{% endif %} me-1"></i>
+                        {% if post_completed %}Completed{% else %}Mark as Complete{% endif %}
+                    </button>
+                    <a href="{% url 'tutorials' %}" class="btn btn-outline-secondary rounded-pill btn-sm">
+                        <i class="fas fa-th me-1"></i>All Tutorials
+                    </a>
+                </div>
             </footer>
         </article>
     </div>

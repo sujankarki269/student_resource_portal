@@ -52,6 +52,11 @@
                         {% endif %}
                         <div class="d-flex align-items-center gap-2 mt-auto pt-2 border-top">
                             <small class="text-muted me-auto"><i class="fas fa-download me-1 text-success"></i>{{ note.downloads }}</small>
+                            <button class="btn-bookmark {% if note.id in bookmarked_ids %}active{% endif %}"
+                                    onclick="toggleBookmark(this,'note',{{ note.id }})"
+                                    title="{% if note.id in bookmarked_ids %}Remove bookmark{% else %}Add bookmark{% endif %}">
+                                <i class="{% if note.id in bookmarked_ids %}fas{% else %}far{% endif %} fa-bookmark"></i>
+                            </button>
                             <a href="{% url 'download' 'note' note.id %}" class="btn btn-sm btn-success rounded-pill"
                                onclick="showDownloadToast('Downloading {{ note.title|escapejs }}')">
                                 <i class="fas fa-download"></i>

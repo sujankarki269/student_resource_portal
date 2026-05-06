@@ -3,10 +3,12 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q, Count, Prefetch
-from .models import Note, Assignment, Program, Tutorial, Subject, Tag, Announcement, Category, Profile, PortfolioProfile, BlogPost, PublicationCategory, PublicationItem
-from django.http import FileResponse, Http404
+from .models import Note, Assignment, Program, Tutorial, Subject, Tag, Announcement, Category, Profile, PortfolioProfile, BlogPost, PublicationCategory, PublicationItem, Bookmark, TutorialProgress
+from django.http import FileResponse, Http404, JsonResponse
 from django.views.decorators.clickjacking import xframe_options_exempt
+from django.views.decorators.http import require_POST
 import os
+import json
 from django.contrib import messages
 from .forms import UserUpdateForm, ProfileUpdateForm
 
@@ -59,11 +61,16 @@ def notes_list(request):
         ])
     paginator = Paginator(notes, 9)
     notes_page = paginator.get_page(request.GET.get('page'))
+    bookmarked_ids = set(
+        Bookmark.objects.filter(user=request.user, note__isnull=False)
+        .values_list('note_id', flat=True)
+    )
     context = {
         'subjects': subjects,
         'notes': notes_page,
         'selected_subject': selected_subject,
         'query': query,
+        'bookmarked_ids': bookmarked_ids,
     }
     return render(request, 'core/notes.html', context)
 
@@ -81,11 +88,16 @@ def assignments_list(request):
         ])
     paginator = Paginator(assignments, 9)
     assignments_page = paginator.get_page(request.GET.get('page'))
+    bookmarked_ids = set(
+        Bookmark.objects.filter(user=request.user, assignment__isnull=False)
+        .values_list('assignment_id', flat=True)
+    )
     context = {
         'subjects': subjects,
         'assignments': assignments_page,
         'selected_subject': selected_subject,
         'query': query,
+        'bookmarked_ids': bookmarked_ids,
     }
     return render(request, 'core/assignments.html', context)
 
@@ -103,11 +115,16 @@ def programs_list(request):
         ])
     paginator = Paginator(programs, 9)
     programs_page = paginator.get_page(request.GET.get('page'))
+    bookmarked_ids = set(
+        Bookmark.objects.filter(user=request.user, program__isnull=False)
+        .values_list('program_id', flat=True)
+    )
     context = {
         'subjects': subjects,
         'programs': programs_page,
         'selected_subject': selected_subject,
         'query': query,
+        'bookmarked_ids': bookmarked_ids,
     }
     return render(request, 'core/programs.html', context)
 
@@ -217,17 +234,38 @@ def category_detail(request, slug):
             display_post.views += 1
             display_post.save()
 
-    # Get all top-level categories for sidebar (if needed)
     top_categories = Category.objects.filter(parent__isnull=True)
+
+    completed_ids = set(
+        TutorialProgress.objects.filter(user=request.user)
+        .values_list('blog_post_id', flat=True)
+    )
+
+    subs_with_progress = []
+    if subcategories.exists():
+        for sub in subcategories:
+            sub_post_ids = list(
+                sub.blog_posts.filter(is_published=True).values_list('id', flat=True)
+            )
+            total = len(sub_post_ids)
+            done = sum(1 for pid in sub_post_ids if pid in completed_ids)
+            subs_with_progress.append({
+                'sub': sub,
+                'total': total,
+                'done': done,
+                'pct': int(done * 100 / total) if total else 0,
+            })
 
     context = {
         'category': category,
         'subcategories': subcategories,
+        'subs_with_progress': subs_with_progress,
         'blog_posts': blog_posts,
         'display_post': display_post,
+        'post_completed': display_post.id in completed_ids if display_post else False,
         'top_categories': top_categories,
         'current_category_slug': category.slug,
-        'ancestor_slugs': ancestor_slugs,   # add this
+        'ancestor_slugs': ancestor_slugs,
     }
     return render(request, template_name, context)
 
@@ -235,11 +273,12 @@ def category_detail(request, slug):
 @login_required
 def blog_post_detail(request, slug):
     post = get_object_or_404(BlogPost, slug=slug, is_published=True)
-    # Increment views
     post.views += 1
     post.save()
+    post_completed = TutorialProgress.objects.filter(user=request.user, blog_post=post).exists()
     context = {
         'post': post,
+        'post_completed': post_completed,
     }
     return render(request, 'core/blog_post_detail.html', context)
 
@@ -249,3 +288,53 @@ def publications_list(request):
     categories = PublicationCategory.objects.prefetch_related('publications').all()
     context = {'categories': categories}
     return render(request, 'core/publications.html', context)
+
+
+@login_required
+@require_POST
+def toggle_bookmark(request):
+    data = json.loads(request.body)
+    model_type = data.get('model')
+    pk = data.get('pk')
+    model_map = {'note': Note, 'assignment': Assignment, 'program': Program}
+    if model_type not in model_map:
+        return JsonResponse({'error': 'Invalid model'}, status=400)
+    obj = get_object_or_404(model_map[model_type], pk=pk)
+    filter_kwargs = {'user': request.user, model_type: obj}
+    existing = Bookmark.objects.filter(**filter_kwargs).first()
+    if existing:
+        existing.delete()
+        return JsonResponse({'bookmarked': False})
+    Bookmark.objects.create(**filter_kwargs)
+    return JsonResponse({'bookmarked': True})
+
+
+@login_required
+def bookmarks_list(request):
+    bookmarks = Bookmark.objects.filter(user=request.user).select_related(
+        'note__subject', 'assignment__subject', 'program__subject'
+    )
+    notes_bm = [b for b in bookmarks if b.note_id]
+    assignments_bm = [b for b in bookmarks if b.assignment_id]
+    programs_bm = [b for b in bookmarks if b.program_id]
+    context = {
+        'notes_bm': notes_bm,
+        'assignments_bm': assignments_bm,
+        'programs_bm': programs_bm,
+        'total': len(notes_bm) + len(assignments_bm) + len(programs_bm),
+    }
+    return render(request, 'core/bookmarks.html', context)
+
+
+@login_required
+@require_POST
+def toggle_tutorial_progress(request):
+    data = json.loads(request.body)
+    post_id = data.get('post_id')
+    blog_post = get_object_or_404(BlogPost, pk=post_id, is_published=True)
+    existing = TutorialProgress.objects.filter(user=request.user, blog_post=blog_post).first()
+    if existing:
+        existing.delete()
+        return JsonResponse({'completed': False})
+    TutorialProgress.objects.create(user=request.user, blog_post=blog_post)
+    return JsonResponse({'completed': True})

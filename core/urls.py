@@ -14,4 +14,7 @@ urlpatterns = [
     path('tutorials/category/<slug:slug>/', views.category_detail, name='category_detail'),
     path('tutorials/post/<slug:slug>/', views.blog_post_detail, name='blog_post_detail'),
     path('publications/', views.publications_list, name='publications'),
+    path('bookmarks/', views.bookmarks_list, name='bookmarks'),
+    path('bookmark/toggle/', views.toggle_bookmark, name='toggle_bookmark'),
+    path('tutorial/progress/toggle/', views.toggle_tutorial_progress, name='toggle_tutorial_progress'),
 ]

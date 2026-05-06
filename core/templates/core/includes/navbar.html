@@ -54,6 +54,11 @@
 
             <!-- Right controls -->
             <div class="d-flex align-items-center gap-2 mt-2 mt-lg-0">
+                {% if user.is_authenticated %}
+                <a href="{% url 'bookmarks' %}" class="btn btn-ghost-icon rounded-circle" title="My Bookmarks">
+                    <i class="fas fa-bookmark"></i>
+                </a>
+                {% endif %}
                 <button class="btn btn-ghost-icon rounded-circle" id="darkModeToggle" title="Toggle dark mode">
                     <i class="fas fa-moon"></i>
                 </button>
@@ -92,7 +97,7 @@
 <div class="hero-header hero-header--full d-flex align-items-center justify-content-center text-white text-center">
     <div class="hero-header-overlay"></div>
     <div class="container position-relative" style="z-index:2;">
-        <p class="lead mb-1 opacity-75">IOE Purwanchal Campus</p>
+        <!-- <p class="lead mb-1 opacity-75">IOE Purwanchal Campus</p> -->
         <h1 class="display-5 fw-bold mb-2">Student Resource Portal</h1>
         <p class="mb-0 opacity-75 fst-italic">"There is no standard answer to life."</p>
     </div>

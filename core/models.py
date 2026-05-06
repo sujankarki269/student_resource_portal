@@ -281,6 +281,34 @@ class PublicationCategory(models.Model):
     def __str__(self):
         return self.name
 
+class Bookmark(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bookmarks')
+    note = models.ForeignKey('Note', on_delete=models.CASCADE, null=True, blank=True, related_name='bookmarks')
+    assignment = models.ForeignKey('Assignment', on_delete=models.CASCADE, null=True, blank=True, related_name='bookmarks')
+    program = models.ForeignKey('Program', on_delete=models.CASCADE, null=True, blank=True, related_name='bookmarks')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        item = self.note or self.assignment or self.program
+        return f"{self.user.username} → {item}"
+
+
+class TutorialProgress(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='tutorial_progress')
+    blog_post = models.ForeignKey('BlogPost', on_delete=models.CASCADE, related_name='progress_entries')
+    completed_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'blog_post')
+        ordering = ['-completed_at']
+
+    def __str__(self):
+        return f"{self.user.username} ✓ {self.blog_post.title}"
+
+
 class PublicationItem(models.Model):
     title = models.CharField(max_length=200)
     category = models.ForeignKey(PublicationCategory, on_delete=models.CASCADE, related_name='publications')
