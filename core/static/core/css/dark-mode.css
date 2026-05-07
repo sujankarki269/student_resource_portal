@@ -77,14 +77,16 @@ body.dark-mode,
 /* ===== Cards ===== */
 .dark-mode .card {
     background-color: #2c2f36 !important;
-    border: 1.5px solid #4a5060 !important;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3) !important;
+    border: 1px solid rgba(255,255,255,0.07) !important;
+    border-radius: 1rem !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.35) !important;
     color: #e0e0e0;
+    overflow: hidden;
     transition: border-color .2s, box-shadow .2s, transform .15s;
 }
 .dark-mode .card:hover {
-    border-color: #7b9fef !important;
-    box-shadow: 0 6px 20px rgba(123,159,239,0.2) !important;
+    border-color: rgba(123,159,239,0.5) !important;
+    box-shadow: 0 6px 20px rgba(123,159,239,0.18) !important;
     transform: translateY(-2px);
 }
 .dark-mode .card-body {
@@ -396,24 +398,26 @@ body.dark-mode,
 /* ===== Assignment cards ===== */
 .dark-mode .assignment-card {
     background: #2c2f36 !important;
-    border: 1.5px solid #4a4f5c !important;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.25), inset 0 3px 0 #ffc107 !important;
+    border: 1px solid rgba(255,255,255,0.07) !important;
+    border-radius: 1rem !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.35), inset 0 3px 0 #ffc107 !important;
 }
 .dark-mode .assignment-card:hover {
-    border-color: #7b9fef !important;
-    box-shadow: 0 6px 20px rgba(123,159,239,0.2), inset 0 3px 0 #ffc107 !important;
+    border-color: rgba(123,159,239,0.5) !important;
+    box-shadow: 0 6px 20px rgba(123,159,239,0.18), inset 0 3px 0 #ffc107 !important;
     transform: translateY(-2px);
 }
 
 /* ===== Tutorial category cards ===== */
 .dark-mode .tutorial-category-card {
     background: #2c2f36 !important;
-    border: 1.5px solid #4a4f5c !important;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.25), inset 0 3px 0 #0dcaf0 !important;
+    border: 1px solid rgba(255,255,255,0.07) !important;
+    border-radius: 1rem !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.35), inset 0 3px 0 #0dcaf0 !important;
 }
 .dark-mode .tutorial-category-card:hover {
-    border-color: #7b9fef !important;
-    box-shadow: 0 6px 20px rgba(123,159,239,0.2), inset 0 3px 0 #0dcaf0 !important;
+    border-color: rgba(123,159,239,0.5) !important;
+    box-shadow: 0 6px 20px rgba(123,159,239,0.18), inset 0 3px 0 #0dcaf0 !important;
     transform: translateY(-2px);
 }
 .dark-mode .tutorial-category-card .card-title {
@@ -470,25 +474,26 @@ body.dark-mode,
 .dark-mode .note-list-card,
 .dark-mode .note-card {
     background: #2c2f36 !important;
-    border: 1.5px solid #4a4f5c !important;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.25), inset 0 3px 0 #667eea !important;
+    border: 1px solid rgba(255,255,255,0.07) !important;
+    border-radius: 1rem !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.35), inset 0 3px 0 #667eea !important;
 }
 .dark-mode .note-list-card:hover,
 .dark-mode .note-card:hover {
-    border-color: #7b9fef !important;
-    box-shadow: 0 6px 20px rgba(123,159,239,0.2), inset 0 3px 0 #667eea !important;
+    border-color: rgba(123,159,239,0.5) !important;
+    box-shadow: 0 6px 20px rgba(123,159,239,0.18), inset 0 3px 0 #667eea !important;
     transform: translateY(-2px);
 }
 
 /* ===== Recent list ===== */
 .dark-mode .list-group.recent-list .list-group-item {
     background: #2c2f36 !important;
-    border: 1.5px solid #4a5060 !important;
+    border: 1px solid rgba(255,255,255,0.07) !important;
     color: #e0e0e0;
 }
 .dark-mode .list-group.recent-list .list-group-item:hover {
-    border-color: #7b9fef !important;
-    box-shadow: 0 6px 20px rgba(123,159,239,0.2) !important;
+    border-color: rgba(123,159,239,0.5) !important;
+    box-shadow: 0 6px 20px rgba(123,159,239,0.18) !important;
     transform: translateY(-2px);
     background: #2c2f36 !important;
 }
@@ -510,12 +515,13 @@ body.dark-mode,
 /* ===== Programs page ===== */
 .dark-mode .program-card-new {
     background: #2c2f36 !important;
-    border: 1.5px solid #4a4f5c !important;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.25), inset 0 3px 0 #28a745 !important;
+    border: 1px solid rgba(255,255,255,0.07) !important;
+    border-radius: 1rem !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.35), inset 0 3px 0 #28a745 !important;
 }
 .dark-mode .program-card-new:hover {
-    border-color: #7b9fef !important;
-    box-shadow: 0 6px 20px rgba(123,159,239,0.2), inset 0 3px 0 #28a745 !important;
+    border-color: rgba(123,159,239,0.5) !important;
+    box-shadow: 0 6px 20px rgba(123,159,239,0.18), inset 0 3px 0 #28a745 !important;
     transform: translateY(-2px);
 }
 .dark-mode .code-preview-wrapper {
