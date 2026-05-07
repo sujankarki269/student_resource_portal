@@ -748,6 +748,81 @@ p.has-text-align-center img {
     justify-content: center;
 }
 
+/* ===== ANNOUNCEMENT BANNER ===== */
+.ann-banner {
+    display: flex;
+    align-items: center;
+    height: 100px;
+    background: #fff;
+    border: 1.5px solid #d1d5db;
+    border-left: 4px solid #ffc107;
+    border-radius: .85rem;
+    padding: 0 1rem;
+    gap: .85rem;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.ann-icon {
+    color: #f59e0b;
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+.ann-body {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+.ann-text {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    font-size: .9rem;
+    line-height: 1.5;
+    color: #374151;
+    width: 100%;
+    opacity: 1;
+    transition: opacity .25s ease;
+}
+.ann-text.ann-hidden {
+    display: none;
+}
+.ann-nav {
+    display: flex;
+    align-items: center;
+    gap: .3rem;
+    flex-shrink: 0;
+}
+.ann-count {
+    font-size: .72rem;
+    color: #9ca3af;
+    font-weight: 600;
+    min-width: 2.5rem;
+    text-align: center;
+}
+.ann-nav button {
+    background: none;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6b7280;
+    cursor: pointer;
+    font-size: .62rem;
+    transition: border-color .15s, color .15s, background .15s;
+}
+.ann-nav button:hover {
+    border-color: #667eea;
+    color: #667eea;
+    background: rgba(102,126,234,0.06);
+}
+
 /* ===== PUBLICATION CARD ===== */
 .pub-card {
     border-top: 3px solid #6c757d !important;

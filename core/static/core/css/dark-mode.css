@@ -729,7 +729,25 @@ body.dark-mode,
 .dark-mode .nav-pills .nav-link.active      { background: #3a5c8a; color: #fff; }
 .dark-mode .nav-pills .nav-link .badge.bg-white { background: rgba(255,255,255,0.15) !important; color: #7b9fef !important; }
 
-/* ===== ANNOUNCEMENT CAROUSEL ===== */
+/* ===== ANNOUNCEMENT BANNER ===== */
+.dark-mode .ann-banner {
+    background: #2c2f36;
+    border-color: #4a5060 !important;
+    border-left-color: #ffc107 !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+.dark-mode .ann-text { color: #fde68a; }
+.dark-mode .ann-count { color: #6b7280; }
+.dark-mode .ann-nav button {
+    border-color: #4a5060;
+    color: #9ca3af;
+}
+.dark-mode .ann-nav button:hover {
+    border-color: #7b9fef;
+    color: #7b9fef;
+    background: rgba(123,159,239,0.1);
+}
+/* keep alert-warning for any other alerts */
 .dark-mode .alert-warning {
     background-color: #3a2e14 !important;
     border-color: #6b5120 !important;
