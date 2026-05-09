@@ -20,7 +20,11 @@ env
 ENV
 env.bak
 venv.bak
+
+# Env — .env.cpanel is a placeholder template (no real secrets), keep it tracked
 .env
+.env.cpanel
+.htaccess
 
 # Django
 *.log

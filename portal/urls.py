@@ -21,10 +21,10 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', include('allauth.urls')),   # allauth URLs
-    path('', include('core.urls')),               # app URLs
+    path('accounts/', include('allauth.urls')),
+    path('', include('core.urls')),
     path("ckeditor5/", include('django_ckeditor_5.urls')),
 ]
 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# Serve media files in both dev and production (Apache intercepts in prod via .htaccess)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
