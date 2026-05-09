@@ -276,25 +276,25 @@ class PublicationItemAdmin(admin.ModelAdmin):
 # ─────────────────────────────────────────────
 #  Portfolio
 # ─────────────────────────────────────────────
-class WorkExperienceInline(admin.TabularInline):
+class WorkExperienceInline(admin.StackedInline):
     model  = WorkExperience
     extra  = 1
-    fields = ('order', 'job_title', 'employer', 'start_date', 'end_date')
+    fields = ('order', 'job_title', 'employer', 'start_date', 'end_date', 'responsibilities')
 
-class EducationInline(admin.TabularInline):
+class EducationInline(admin.StackedInline):
     model  = Education
     extra  = 1
-    fields = ('order', 'degree', 'institution', 'start_date', 'end_date')
+    fields = ('order', 'degree', 'institution', 'start_date', 'end_date', 'description')
 
-class PublicationInline(admin.TabularInline):
+class PublicationInline(admin.StackedInline):
     model  = Publication
     extra  = 1
-    fields = ('order', 'title', 'conference_journal', 'date')
+    fields = ('order', 'title', 'authors', 'conference_journal', 'date', 'description', 'link')
 
-class HonorAwardInline(admin.TabularInline):
+class HonorAwardInline(admin.StackedInline):
     model  = HonorAward
     extra  = 1
-    fields = ('order', 'title', 'issuer', 'date')
+    fields = ('order', 'title', 'issuer', 'date', 'description')
 
 class SubjectTaughtInline(admin.TabularInline):
     model  = SubjectTaught

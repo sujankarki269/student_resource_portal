@@ -1,0 +1,255 @@
+[
+{
+  "model": "core.portfolioprofile",
+  "pk": 1,
+  "fields": {
+    "first_name": "Er. Sujan",
+    "surname": "Karki",
+    "address": "Itahari-16, Sunsari",
+    "mobile": "9819387234",
+    "email": "sujan@ioepc.edu.np",
+    "nationality": "Nepali",
+    "date_of_birth": "1999-11-05",
+    "gender": "Male",
+    "profile_picture": "portfolio/DSC_0862_5KBqtIZ.jpg",
+    "bio": "",
+    "github": "https://github.com/sujankarki269",
+    "linkedin": "https://www.linkedin.com/in/sujan-karki-78159515a/",
+    "twitter": ""
+  }
+},
+{
+  "model": "core.workexperience",
+  "pk": 1,
+  "fields": {
+    "profile": 1,
+    "start_date": "2021-01-01",
+    "end_date": "2023-01-01",
+    "job_title": "CS Teacher",
+    "employer": "Pathibhara Secondary School, Itahari",
+    "responsibilities": "Computer Science Teacher",
+    "order": 1
+  }
+},
+{
+  "model": "core.workexperience",
+  "pk": 2,
+  "fields": {
+    "profile": 1,
+    "start_date": "2023-01-01",
+    "end_date": null,
+    "job_title": "Lecturer",
+    "employer": "IOE Purwanchal Campus, Dharan",
+    "responsibilities": "Department of Electronics and Computer Engineering",
+    "order": 3
+  }
+},
+{
+  "model": "core.workexperience",
+  "pk": 3,
+  "fields": {
+    "profile": 1,
+    "start_date": "2023-01-01",
+    "end_date": "2025-01-01",
+    "job_title": "Lecturer",
+    "employer": "Birendra Memorial College, Dharan",
+    "responsibilities": "Bachelor of Science in Computer Science and Information Technology",
+    "order": 2
+  }
+},
+{
+  "model": "core.workexperience",
+  "pk": 4,
+  "fields": {
+    "profile": 1,
+    "start_date": "2025-01-01",
+    "end_date": null,
+    "job_title": "Lecturer",
+    "employer": "Godawari College, Itahari",
+    "responsibilities": "Coordinator for Bachelor in Computer Application\r\nBachelor of Science in Computer Science and Information Technology",
+    "order": 4
+  }
+},
+{
+  "model": "core.education",
+  "pk": 1,
+  "fields": {
+    "profile": 1,
+    "start_date": "2023-01-01",
+    "end_date": "2025-01-01",
+    "institution": "IOE Purwanchal Campus, Dharan, Nepal",
+    "degree": "Master in Information System Engineering",
+    "description": "86.73% - Distinction",
+    "order": 1
+  }
+},
+{
+  "model": "core.education",
+  "pk": 2,
+  "fields": {
+    "profile": 1,
+    "start_date": "2017-01-01",
+    "end_date": "2022-01-01",
+    "institution": "IOE Purwanchal Campus, Dharan, Nepal",
+    "degree": "Bachelor’s in Computer Engineering",
+    "description": "74.04% -First Division",
+    "order": 2
+  }
+},
+{
+  "model": "core.education",
+  "pk": 3,
+  "fields": {
+    "profile": 1,
+    "start_date": "2015-01-01",
+    "end_date": "2017-01-01",
+    "institution": "Golden Gate International College, Kathmandu",
+    "degree": "Grade 11-12",
+    "description": "81.80% -Distinction",
+    "order": 3
+  }
+},
+{
+  "model": "core.education",
+  "pk": 4,
+  "fields": {
+    "profile": 1,
+    "start_date": "2002-01-01",
+    "end_date": "2015-01-01",
+    "institution": "Little Flowers Secondary English Boarding School Itahari -5, Pachrukhi",
+    "degree": "Till Grade 10",
+    "description": "81.75% -Distinction",
+    "order": 4
+  }
+},
+{
+  "model": "core.publication",
+  "pk": 1,
+  "fields": {
+    "profile": 1,
+    "title": "SMALLER LARGE LANGUAGE MODELS FOR TEXT-TO-SQL: PERFORMANCE ANALYSIS AND OPTIMAL PERFORMANCE",
+    "conference_journal": "International Conference on Inventive Computation Technologies (ICICT) 2025",
+    "date": "2025-04-23",
+    "authors": "Sujan Karki, Pukar Karki, Binay Lal Shrestha, and Tantra Nath Jha",
+    "description": "Participated at the 2025 International Conference on Inventive Computation Technologies (ICICT), organized by IEEE, for the paper entitled, “Smaller Large Language Models for Text-To-SQL: Performance Analysis and Optimal Performance”",
+    "link": "https://ieeexplore.ieee.org/document/11005216",
+    "order": 1
+  }
+},
+{
+  "model": "core.publication",
+  "pk": 2,
+  "fields": {
+    "profile": 1,
+    "title": "SOCIAL DISTANCING VIOLATION DETECTION",
+    "conference_journal": "9th International Conference on Advanced Engineering and ICT- Convergence",
+    "date": "2022-07-13",
+    "authors": "Sujan Karki, Niruta Dhimal, Pradip Sapkota, Anish Joshi, and Sabin Kafley",
+    "description": "Participated at the 9th International Conference on Advanced Engineering and ICT- Convergence 2022, (9th ICAEIC-2022) organized by ICT-AES in Jeju Island, South Korea, for the paper entitled, “Social Distancing Violation Detection”",
+    "link": "https://ictaes.org/archive_n/?vid=9",
+    "order": 2
+  }
+},
+{
+  "model": "core.honoraward",
+  "pk": 1,
+  "fields": {
+    "profile": 1,
+    "title": "BEST CONCEPT NOTE POSTER PRESENTATION",
+    "issuer": "RMC IOE Purwanchal Campus",
+    "date": "2022-01-15",
+    "description": "Awarded by Research Management Cell, Purwanchal Campus\r\nDepartment of Computer and Electronics Engineering \r\nTitle: Social Distancing Violation Detection",
+    "order": 0
+  }
+},
+{
+  "model": "core.subjecttaught",
+  "pk": 1,
+  "fields": {
+    "profile": 1,
+    "name": "C Programming",
+    "order": 1
+  }
+},
+{
+  "model": "core.subjecttaught",
+  "pk": 2,
+  "fields": {
+    "profile": 1,
+    "name": "Python",
+    "order": 2
+  }
+},
+{
+  "model": "core.subjecttaught",
+  "pk": 3,
+  "fields": {
+    "profile": 1,
+    "name": "Data Science",
+    "order": 3
+  }
+},
+{
+  "model": "core.subjecttaught",
+  "pk": 4,
+  "fields": {
+    "profile": 1,
+    "name": "Data Structure & Algorithm",
+    "order": 4
+  }
+},
+{
+  "model": "core.subjecttaught",
+  "pk": 5,
+  "fields": {
+    "profile": 1,
+    "name": "Design and Analysis of Algorithm",
+    "order": 5
+  }
+},
+{
+  "model": "core.subjecttaught",
+  "pk": 6,
+  "fields": {
+    "profile": 1,
+    "name": "Natural Language Processing",
+    "order": 6
+  }
+},
+{
+  "model": "core.subjecttaught",
+  "pk": 7,
+  "fields": {
+    "profile": 1,
+    "name": "Computer Organization & Architecture",
+    "order": 8
+  }
+},
+{
+  "model": "core.subjecttaught",
+  "pk": 8,
+  "fields": {
+    "profile": 1,
+    "name": "Computer Graphics",
+    "order": 9
+  }
+},
+{
+  "model": "core.subjecttaught",
+  "pk": 9,
+  "fields": {
+    "profile": 1,
+    "name": "Operating System",
+    "order": 10
+  }
+},
+{
+  "model": "core.subjecttaught",
+  "pk": 10,
+  "fields": {
+    "profile": 1,
+    "name": "Database Management System",
+    "order": 7
+  }
+}
+]
